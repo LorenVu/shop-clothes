@@ -9,7 +9,28 @@ public static class ServiceExtension
     {
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(
+            // options =>
+            // {
+            //     // Dynamically add Swagger document groups based on endpoint versions
+            //     options.DocInclusionPredicate((docName, apiDesc) => 
+            //         apiDesc.RelativePath != null 
+            //         && apiDesc.RelativePath.StartsWith(docName, StringComparison.OrdinalIgnoreCase));
+            //
+            //     // Add Swagger document for each version-group
+            //     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+            //     {
+            //         Title = "API v1",
+            //         Version = "v1",
+            //     });
+            //
+            //     options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+            //     {
+            //         Title = "API v2",
+            //         Version = "v2",
+            //     });
+            // }
+            );
 
         return services;
     }

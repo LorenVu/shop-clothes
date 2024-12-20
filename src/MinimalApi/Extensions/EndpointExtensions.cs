@@ -23,10 +23,19 @@ public static class EndpointExtensions
     public static IApplicationBuilder RegisterMinimalEndpoints(this WebApplication app)
     {
         var endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
-      
-        foreach (var endpoint in endpoints)
+
+        var groupedEndpoints = endpoints
+            .GroupBy(endpoint => new { endpoint.Version, endpoint.Group });
+        
+        foreach (var group in groupedEndpoints)
         {
-            endpoint.MapEndpoint(app);
+            var routePrefix = $"/{group.Key.Version}/{group.Key.Group}";
+            var groupBuilder = app.MapGroup(routePrefix);
+            
+            foreach (var endpoint in group)
+            {
+                endpoint.MapEndpoint(groupBuilder);
+            }
         }
 
         return app;

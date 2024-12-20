@@ -14,7 +14,6 @@ try
     builder.Services.Configuration();
     builder.Services.AddMinimalEndpoints();
 
-
     var app = builder.Build();
 
     app.RegisterMinimalEndpoints();
