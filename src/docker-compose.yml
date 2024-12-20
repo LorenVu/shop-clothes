@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  # database section
+  postgredb:
+    image: postgres
+    
+  pgadmin:
+    image: dpage/pgadmin4
+    
+  redis:
+    image: redis:alpine
+  
+#network section
+networks:
+  defaults:
+    name: epay_networks
+    driver: bridge
+    
+#volumes section    
+volumes:
+  postgredb_data: 
+    name: postgredb_data
+  pgadmin_data:
+    name: pgadmin_data
