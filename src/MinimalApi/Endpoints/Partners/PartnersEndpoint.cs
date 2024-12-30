@@ -6,7 +6,7 @@ namespace MinimalProject.Endpoints.Partners;
 
 public class PartnersEndpoint : IEndpoint
 {
-    public string Group => nameof(PartnersEndpoint).Split("Endpoint").First();
+    public string Group => nameof(PartnersEndpoint).Split("Endpoint").First().ToLower();
     public string Version => "api/v1";
     
     public void MapEndpoint(IEndpointRouteBuilder routeBuilder)

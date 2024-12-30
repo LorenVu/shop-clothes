@@ -7,20 +7,20 @@ public static class QueryableExtensions
 {
     public static IQueryable<T> Filtering<T>(this IQueryable<T> query, List<FilterCondition> filters)
     {
-        foreach (var filter in filters)
-        {
-            var condition = $"{filter.Field} {GetOperator(filter.Operator)} @0";
-            query = query.Where(condition, filter.Value);
-        }
+        // foreach (var filter in filters)
+        // {
+        //     var condition = $"{filter.Field} {GetOperator(filter.Operator)} @0";
+        //     query = query.Where(condition, filter.Value);
+        // }
         return query;
     }
     
     public static IQueryable<T> Ordering<T>(this IQueryable<T> query, IEnumerable<OrderCondition> sorts)
     {
-        foreach (var sort in sorts)
-        {
-            query.OrderBy($"{sort.Field} {sort.Direction}");
-        }
+        // foreach (var sort in sorts)
+        // {
+        //     query.OrderBy($"{sort.Field} {sort.Direction}");
+        // }
         
         return query;
     }

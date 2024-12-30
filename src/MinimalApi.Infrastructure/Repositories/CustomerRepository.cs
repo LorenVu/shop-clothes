@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.Domain.Constracts;
 using MinimalApi.Domain.Entities;
+using MinimalApi.Infrastructure.Persistences;
 using MinimalApi.Infrastructure.Repositories.Interfaces;
 using MinimalProject.Infrastructure.Persistences;
 

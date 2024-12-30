@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MinimalApi.Domain.Commnon;
+using MinimalApi.Domain.Common;
 
 namespace MinimalApi.Domain.Entities;
 

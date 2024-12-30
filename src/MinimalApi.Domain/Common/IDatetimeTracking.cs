@@ -2,6 +2,6 @@ namespace MinimalApi.Domain.Commnon;
 
 public interface IDatetimeTracking
 {
-    public DateTime CreatedDate { get; set; }
-    public DateTime LastModifiredDate { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
+    public DateTimeOffset LastModifiredDate { get; set; }
 }

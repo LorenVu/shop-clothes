@@ -8,7 +8,7 @@ namespace MinimalProject.Endpoints.Users;
 
 public class UsersEndpoint : IEndpoint
 {
-    public string Group => nameof(UsersEndpoint).Split("Endpoint").First();
+    public string Group => nameof(UsersEndpoint).Split("Endpoint").First().ToLower();
     public string Version => "api/v1";
     
     public void MapEndpoint(IEndpointRouteBuilder routeBuilder)

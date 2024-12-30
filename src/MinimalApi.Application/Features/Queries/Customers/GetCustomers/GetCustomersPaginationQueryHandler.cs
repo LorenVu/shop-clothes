@@ -1,5 +1,4 @@
 using MediatR;
-using MinimalApi.Application.Common.Extensions;
 using MinimalApi.Domain.Entities;
 using MinimalApi.Infrastructure.Repositories.Interfaces;
 using MinimalApi.Infrastructure.Seeds;
@@ -13,11 +12,11 @@ public class GetCustomersPaginationQueryHandler(ICustomerRepository customerRepo
     {
         var queryable = customerRepository.GetAllAsync();
 
-        if (request.Filters is { Count: > 0 })
-            queryable.Filtering(request.Filters);
-
-        if (request.Orders is { Count: > 0 })
-            queryable.Ordering(request.Orders);
+        // if (request.Filters is { Count: > 0 })
+        //     queryable.Filtering(request.Filters);
+        //
+        // if (request.Orders is { Count: > 0 })
+        //     queryable.Ordering(request.Orders);
 
         return await PagedList<Customer>.ToPagedList(queryable, request.PageIndex, request.PageSize);
     }

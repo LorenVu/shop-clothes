@@ -1,4 +1,3 @@
-using System.Reflection;
 using MinimalApi.Application;
 using MinimalApi.Infrastructure;
 using MinimalProject.Extensions;
@@ -8,11 +7,13 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.ConfigurePostgresDbContext(builder.Configuration);
-    builder.Services.ConfigureApplicationServices();
-    builder.Services.ConfigureInfrastructureServices();
 // Add services to the container.
     builder.Services.Configuration();
+    builder.Services.ConfigureApplicationServices();
+    builder.Services.ConfigureInfrastructureServices();
+    builder.Services.AddConfigurationSettings(builder.Configuration);
     builder.Services.AddMinimalEndpoints();
+    builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
     var app = builder.Build();
 

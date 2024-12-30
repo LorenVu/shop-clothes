@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.Domain.Entities;
 
-namespace MinimalProject.Infrastructure.Persistences;
+namespace MinimalApi.Infrastructure.Persistences;
 
 public class ApplicationDbContext : DbContext
 {
@@ -23,11 +23,15 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Customer>()
-            .HasIndex(c => c.FullName, "IX_FullName_Descending")
+            .HasIndex(c => c.FullName, "IX_Customer_FullName_Descending")
+            .HasMethod("gin")
+            .HasAnnotation("Npgsql:IndexOps", "gin_trgm_ops")
             .IsDescending();
 
         modelBuilder.Entity<Customer>()
-            .HasIndex(c => c.EmailAddress, "IX_Email_Descending")
+            .HasIndex(c => c.EmailAddress, "IX_Customer_Email_Descending")
+            .HasMethod("gin")
+            .HasAnnotation("Npgsql:IndexOps", "gin_trgm_ops")
             .IsDescending();
         
         base.OnModelCreating(modelBuilder);

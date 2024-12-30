@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.Domain.Commnon;
 using MinimalApi.Domain.Constracts;
+using MinimalApi.Infrastructure.Persistences;
 using MinimalProject.Infrastructure.Persistences;
 
 namespace MinimalApi.Infrastructure.Repositories;
@@ -10,8 +11,8 @@ public abstract class RepositoryBase<TEntity, K>(ApplicationDbContext context, I
     : IRepositoryBase<TEntity, K>
     where TEntity : EntityBase<K>
 {
-    protected ApplicationDbContext _context = context;
-    protected IUnitOfWork _unitOfWork = unitOfWork;
+    protected readonly ApplicationDbContext _context = context;
+    protected readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public IQueryable<TEntity> GetAllAsync(bool trackChanges = false) =>
         trackChanges
@@ -43,10 +44,10 @@ public abstract class RepositoryBase<TEntity, K>(ApplicationDbContext context, I
     }
 
     public Task<TEntity?> FindByIdAsync(K id) =>
-        FindByConditionAsync(x => x.Id.Equals(id), true).FirstOrDefaultAsync();
+        FindByConditionAsync(x => x.Id != null && x.Id.Equals(id), true).FirstOrDefaultAsync();
 
     public Task<TEntity?> FindByIdAsync(K id, params Expression<Func<TEntity, bool>>[] includeProperties) => 
-        FindByConditionAsync(x => x.Id.Equals(id), false, includeProperties).FirstOrDefaultAsync();
+        FindByConditionAsync(x => x.Id != null && x.Id.Equals(id), false, includeProperties).FirstOrDefaultAsync();
 
     public async Task<K> CreateAsync(TEntity entity)
     {

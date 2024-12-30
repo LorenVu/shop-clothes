@@ -2,15 +2,15 @@ namespace MinimalApi.Infrastructure.Shared;
 
 public class ApiFailedResult<T> : ApiResult<T>
 {
-    public ApiFailedResult(string message = null) : base(false, message)
+    public ApiFailedResult(string? message = null) : base(false, message)
     {
     }
 
-    public ApiFailedResult(T data, string message = null) : base(data, false, message)
+    public ApiFailedResult(T data, string? message = null) : base(data, false, message)
     {
     }
 
-    public ApiFailedResult(T Data) : base(Data, false)
+    public ApiFailedResult(T data) : base(data, false)
     {
     }
 

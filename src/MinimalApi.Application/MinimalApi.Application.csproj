@@ -23,6 +23,8 @@
     <ItemGroup>
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Validators\" />
+      <Folder Include="Features\Commands\Customers\" />
+      <Folder Include="Features\Queries\Customers\" />
     </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ namespace MinimalApi.Infrastructure.Shared;
 
 public class ApiSuccessResult<T> : ApiResult<T>
 {
-    public ApiSuccessResult(string message = null) : base(true, message)
+    public ApiSuccessResult(string? message = null) : base(true, message)
     {
     }
 
@@ -10,14 +10,14 @@ public class ApiSuccessResult<T> : ApiResult<T>
     {
     }
 
-    public ApiSuccessResult(T Data) : base(Data, true)
+    public ApiSuccessResult(T data) : base(data, true)
     {
     }
     
-    private static readonly Lazy<ApiSuccessResult<T>> lazy =
+    private static readonly Lazy<ApiSuccessResult<T>> Lazy =
         new (() => new ApiSuccessResult<T>());
 
-    public static ApiSuccessResult<T> Instance => lazy.Value;
+    public static ApiSuccessResult<T> Instance => Lazy.Value;
 
     public ApiSuccessResult<T> WithData(T data)
     {

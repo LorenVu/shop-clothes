@@ -19,20 +19,80 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e271409-16b8-4dcb-92f4-2a05804f096e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.minimal-api/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/BankRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/Interfaces/IBankRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Banks/BanksEndpoint.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/UsersEndpoint.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Common/Dtos/TransactionDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Common/MapProfile.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Banks/CreateBank/CreateBankCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Banks/DeleteBank/DeleteBankCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Banks/DeleteBank/DeleteBankCommandHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Banks/DeleteBank/DeleteBankCommandValidation.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Common/Banks/CreateAndUpdateBankCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Banks/GetBanks/GetBanksPaginationQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Banks/GetBanks/GetBanksPaginationQueryHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Transactions/GetTransactions/GetTransactionQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Transactions/GetTransactions/GetTransactionQueryHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Configs/SepayConfig.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Transaction.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/Configurations/BankConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/Configurations/TransactionConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/Interfaces/ITransactionRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/TransactionRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ExternalApiResponse/Sepay/SepayBaseResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ExternalApiResponse/Sepay/SepayTransactionResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Transactions/TransactionsEndpoint.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.minimal-api/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.minimal-api/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/IEndpoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/IEndpoint.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/CreateUser.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/GetUserById.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/GetUsers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Partners/PartnersEndpoint.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Extensions/ApplicationExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Extensions/ApplicationExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Extensions/EndpointExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Extensions/EndpointExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Common/Extensions/IQueryableExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Common/Extensions/IQueryableExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/ConfigureApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/ConfigureApplication.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/CreateCustomer/CreateCustomerCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/CreateCustomer/CreateCustomerCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/CreateCustomer/CreateCustomerCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/CreateCustomer/CreateCustomerCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/CreateCustomer/CreateCustomerCommandValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/CreateCustomer/CreateCustomerCommandValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/DeleteCustomer/DeleteCustomerCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/DeleteCustomer/DeleteCustomerCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/DeleteCustomer/DeleteCustomerCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/DeleteCustomer/DeleteCustomerCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/DeleteCustomer/DeleteCustomerCommandValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/DeleteCustomer/DeleteCustomerCommandValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/UpdateCustomer/UpdateCustomerCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/UpdateCustomer/UpdateCustomerCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/UpdateCustomer/UpdateCustomerCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/UpdateCustomer/UpdateCustomerCommandHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/UpdateCustomer/UpdateCustomerCommandValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Commands/Customers/UpdateCustomer/UpdateCustomerCommandValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Common/CreateOrUpdateCustomerCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Common/Customers/CreateOrUpdateCustomerCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/GetCustomerById/GetCustomerByIdQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Customers/GetCustomerById/GetCustomerByIdQuery.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/GetCustomerById/GetCustomerByIdQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Customers/GetCustomerById/GetCustomerByIdQueryHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/GetCustomerById/GetCustomerByIdQueryValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Customers/GetCustomerById/GetCustomerByIdQueryValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/GetCustomers/GetCustomersPaginationQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Customers/GetCustomers/GetCustomersPaginationQuery.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/GetCustomers/GetCustomersPaginationQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/Features/Queries/Customers/GetCustomers/GetCustomersPaginationQueryHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Application/MinimalApi.Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Application/MinimalApi.Application.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Common/EntityAuditBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Common/EntityAuditBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Common/EntityBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Common/EntityBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Common/IDatetimeTracking.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Common/IDatetimeTracking.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Address.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Address.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Bank.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Bank.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Contract.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Contract.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Country.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Country.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/District.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/District.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Partner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Partner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Province.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Province.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Ward.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Domain/Entities/Ward.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/ConfigureInfrastructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/ConfigureInfrastructure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/MinimalApi.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/MinimalApi.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/Data/20241205043013_Init_Database.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/Data/20241205043013_Init_Database.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Persistences/Data/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/BankRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/BankRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/CustomerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/CustomerRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/Interfaces/IBankRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/Interfaces/IBankRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/RepositoryBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/RepositoryBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/UnitOfWork/UnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/UnitOfWork/UnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Requests/FilterCondition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Requests/FilterCondition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Requests/OrderCondition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Requests/OrderCondition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Requests/QueryBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Requests/QueryBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ApiFailedResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ApiFailedResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ApiResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ApiResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ApiSuccessResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi.Infrastructure/Shared/Responses/ApiSuccessResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Banks/BanksEndpoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Banks/BanksEndpoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Partners/PartnersEndpoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Partners/PartnersEndpoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/UsersEndpoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/UsersEndpoint.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MinimalApi/Extensions/ServiceExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Extensions/ServiceExtension.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MinimalApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MinimalApi/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/MinimalApi/appsettings.Development.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,12 +118,18 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/243a037ca7a04510a506adfdd94befbac90930/5a/b06797ca/IEnumerable`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/243a037ca7a04510a506adfdd94befbac90930/d4/8563f2d4/ICollection`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/23f0b8a8ee6e7ecf5133beff735fd182a153f73a55224e73a2a2f06e576856/RoutingEndpointConventionBuilderExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2e49d132ea68ff47071c64476ae29138fa965dc555ef7c3f4991586431de241/Task.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3c42a89dd27aff10dbbbbe2ae74a3b5dcd7b1b16dbef252274e2c78543d024/EntityTypeBuilder`.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4b21fc3f8a3abb5d25f06c622276fbec0fd3932f169cc6af520bf5abc6a46b4/DbSet.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/57ef264888488357640f23a308ccecd818012805b7b56dd32bd469a819f56ee/IPipelineBehavior.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5890bea1acfbf3fed68846cf88de417726aefd9611192c0103fe2da89fa41/ConfigurationBinder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6ca65bb22f648dad9d962c374e9bf8ce430d080f65d311fc6245154f0ee58b6/EndpointRouteBuilderExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/92915fc433708d54b82f7e51aa6c115b21ca2f9695264db0585bf5cd6e9e1959/Results.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9e6ecf3790a24c43487ae724bf9ea8185bdedaf6c28da376d6ea862e66453/WebApplicationBuilder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/MinimalApi/Endpoints/Users/CreateUser.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d5561f79efcdcb327a3e980623699d6a9c240ed13dc902d741aaae1447bf852/Transaction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/MinimalApi/Extensions/HostExtension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/MinimalApi/Extensions/ServiceExtension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/MinimalApi/Program.cs" root0="FORCE_HIGHLIGHTING" />
@@ -333,6 +399,10 @@
       <workItem from="1734580360839" duration="8866000" />
       <workItem from="1734684045633" duration="602000" />
       <workItem from="1734686462242" duration="2241000" />
+      <workItem from="1734921250580" duration="9420000" />
+      <workItem from="1735021144609" duration="1462000" />
+      <workItem from="1735524509290" duration="7614000" />
+      <workItem from="1735533284644" duration="15808000" />
     </task>
     <task id="LOCAL-00001" summary="init project">
       <option name="closed" value="true" />
@@ -378,17 +448,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/src/MinimalApi.Application/Common/Extensions/IQueryableExtensions.cs</url>
-          <line>12</line>
-          <properties documentPath="C:\Users\longvn\RiderProjects\test-project\src\MinimalApi.Application\Common\Extensions\IQueryableExtensions.cs" containingFunctionPresentation="Method 'Filtering'">
+          <url>file://$PROJECT_DIR$/src/MinimalApi.Infrastructure/Repositories/TransactionRepository.cs</url>
+          <line>22</line>
+          <properties documentPath="C:\Users\longvn\Desktop\minimal-api\src\MinimalApi.Infrastructure\Repositories\TransactionRepository.cs" containingFunctionPresentation="Method 'GetTransactionsAsync'">
             <startOffsets>
-              <option value="428" />
+              <option value="886" />
             </startOffsets>
             <endOffsets>
-              <option value="473" />
+              <option value="958" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
