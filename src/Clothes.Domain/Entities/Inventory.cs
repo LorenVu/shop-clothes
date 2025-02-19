@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using MinimalApi.Domain.Common;
-using MinimalApi.Domain.Enums;
+using Clothes.Domain.Common;
+using Clothes.Domain.Enums;
 
-namespace MinimalApi.Domain.Entities;
+namespace Clothes.Domain.Entities;
 
 [Table("Inventories")]
 public class Inventory : EntityAuditBase<string>
@@ -14,12 +14,12 @@ public class Inventory : EntityAuditBase<string>
     }
 
     public EDocumentType DocumentType { get; set; }
-    
+
     public string DocumentNo { get; set; }
-    
+
     public string ItemNo { get; set; }
-    
+
     public int Quantity { get; set; }
-    
-    public string?  ExternalDocumentNo { get; set; }
+
+    public string? ExternalDocumentNo { get; set; }
 }

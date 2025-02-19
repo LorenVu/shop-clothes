@@ -1,7 +1,7 @@
-using MinimalApi.Application.Common.Map;
-using MinimalApi.Domain.Entities;
+using Clothes.Application.Common.Mappings;
+using Clothes.Domain.Entities;
 
-namespace MinimalApi.Application.Features.Common;
+namespace Clothes.Application.Features.Common.Users;
 
 public abstract class CreateOrUpdateUserCommand : IMapFrom<User>
 {

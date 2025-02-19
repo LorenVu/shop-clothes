@@ -1,12 +1,10 @@
 using System.Reflection;
+using Clothes.Domain.Constracts;
+using Clothes.Infrastructure.Repositories.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Infrastructure.Repositories;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Repositories.UnitOfWork;
 using Scrutor;
 
-namespace MinimalApi.Infrastructure;
+namespace Clothes.Infrastructure;
 
 public static class ConfigureInfrastructure
 {
@@ -25,9 +23,9 @@ public static class ConfigureInfrastructure
             .FromCallingAssembly()
             .AddClasses()
             .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsSelf() 
+            .AsSelf()
             .WithScopedLifetime());
-        
+
         return services;
     }
 }

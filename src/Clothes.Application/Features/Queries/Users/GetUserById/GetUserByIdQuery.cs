@@ -1,15 +1,15 @@
+using Clothes.Application.Common.Dtos;
 using MediatR;
-using MinimalApi.Domain.Entities;
 
-namespace MinimalApi.Application.Features.Queries.Users;
+namespace Clothes.Application.Features.Queries.Users.GetUserById;
 
-public class GetUserByIdQuery : IRequest<User>
+public class GetUserByIdQuery(Guid id) : IRequest<UserDto?>
 {
-    private Guid _id;
+    private Guid _id = id;
 
     public Guid Id
     {
-        get => _id; 
+        get => _id;
         set => _id = value;
     }
 }

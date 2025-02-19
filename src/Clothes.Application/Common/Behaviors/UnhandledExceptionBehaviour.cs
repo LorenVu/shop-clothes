@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace MinimalApi.Application.Common.Behaviors;
+namespace Clothes.Application.Common.Behaviors;
 
 public class UnhandledExceptionBehaviour<TRequest, TResponse>(
     ILogger<UnhandledExceptionBehaviour<TRequest, TResponse>> logger)

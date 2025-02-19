@@ -1,8 +1,8 @@
+using Clothes.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MinimalApi.Domain.Entities;
 
-namespace MinimalApi.Infrastructure.Persistences.Configurations;
+namespace Clothes.Infrastructure.Persistences.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

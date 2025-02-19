@@ -1,8 +1,8 @@
 using System.Transactions;
 using AutoMapper;
-using MinimalApi.Application.Common.Dtos;
+using Clothes.Application.Common.Dtos;
 
-namespace MinimalApi.Application.Common;
+namespace Clothes.Application.Common;
 
 public class MapProfile : Profile
 {

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.UpdateUser;
 
 public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
@@ -15,7 +15,7 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 
         RuleFor(x => x.EmailAddress)
             .NotEmpty().WithMessage("{PropertyName} cannot be empty");
-        
+
         // RuleFor(x => x.Id)
         //     .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0");
     }

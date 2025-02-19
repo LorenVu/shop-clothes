@@ -1,7 +1,7 @@
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Domain.Entities;
+using Clothes.Domain.Constracts;
+using Clothes.Domain.Entities;
 
-namespace MinimalApi.Infrastructure.Repositories.Interfaces;
+namespace Clothes.Infrastructure.Repositories.Interfaces;
 
 public interface IBankRepository : IRepositoryBase<Bank, int>
 {

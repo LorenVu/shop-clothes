@@ -1,10 +1,9 @@
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Repositories.Interfaces;
+using Clothes.Infrastructure.Seeds;
 using MediatR;
-using MinimalApi.Application.Common.Extensions;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Seeds;
 
-namespace MinimalApi.Application.Features;
+namespace Clothes.Application.Features.Queries.Banks.GetBanks;
 
 public class GetBanksPaginationQueryHandler(IBankRepository bankRepository)
     : IRequestHandler<GetBanksPaginationQuery, PagedList<Bank>>

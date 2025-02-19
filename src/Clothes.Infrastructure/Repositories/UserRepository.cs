@@ -1,10 +1,10 @@
+using Clothes.Domain.Constracts;
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Persistences;
+using Clothes.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Persistences;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
 
-namespace MinimalApi.Infrastructure.Repositories;
+namespace Clothes.Infrastructure.Repositories;
 
 public class UserRepository : RepositoryBase<User, Guid>, IUserRepository
 {
@@ -17,6 +17,9 @@ public class UserRepository : RepositoryBase<User, Guid>, IUserRepository
 
     public async Task<User?> GetUserByIdAsync(Guid id) =>
         await FindByIdAsync(id);
+
+    public Task<User?> GetUserByEmailAsync(string email) =>
+        FindByConditionAsync(u => u.EmailAddress == email).FirstOrDefaultAsync();
 
     public async Task<User> CreateUserAsync(User user)
     {

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.DeleteUser;
 
 public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
 {

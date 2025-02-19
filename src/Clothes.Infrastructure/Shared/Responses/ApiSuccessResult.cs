@@ -1,4 +1,4 @@
-namespace MinimalApi.Infrastructure.Shared;
+namespace Clothes.Infrastructure.Shared.Responses;
 
 public class ApiSuccessResult<T> : ApiResult<T>
 {
@@ -13,9 +13,9 @@ public class ApiSuccessResult<T> : ApiResult<T>
     public ApiSuccessResult(T data) : base(data, true)
     {
     }
-    
+
     private static readonly Lazy<ApiSuccessResult<T>> Lazy =
-        new (() => new ApiSuccessResult<T>());
+        new(() => new ApiSuccessResult<T>());
 
     public static ApiSuccessResult<T> Instance => Lazy.Value;
 
@@ -25,10 +25,10 @@ public class ApiSuccessResult<T> : ApiResult<T>
         return Instance;
     }
 
-    public ApiSuccessResult<T> WithMessage(string message)
+    public ApiSuccessResult<T> WithMessage(string? message = "Success")
     {
         Instance.Message = message;
         return Instance;
     }
-        
+
 }

@@ -1,4 +1,4 @@
-namespace MinimalApi.Domain.Commnon;
+namespace Clothes.Domain.Common;
 
 public interface IDatetimeTracking
 {

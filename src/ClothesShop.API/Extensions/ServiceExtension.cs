@@ -1,10 +1,10 @@
+using Clothes.Domain.Configs;
+using Clothes.Infrastructure.Persistences;
+using Clothes.Infrastructure.Repositories;
+using Clothes.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Domain.Configs;
-using MinimalApi.Infrastructure.Persistences;
-using MinimalApi.Infrastructure.Repositories;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
 
-namespace MinimalProject.Extensions;
+namespace ClothesShop.API.Extensions;
 
 public static class ServiceExtension
 {
@@ -36,7 +36,7 @@ public static class ServiceExtension
             );
 
         services.ConfigureHttpClients();
-        
+
         return services;
     }
 
@@ -46,7 +46,7 @@ public static class ServiceExtension
         if (sePayConfig != null)
             services.AddSingleton(sePayConfig);
     }
-    
+
     public static void ConfigurePostgresDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnectionString");
@@ -54,19 +54,19 @@ public static class ServiceExtension
         services.AddDbContextPool<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
     }
-    
+
     private static void ConfigureHttpClients(this IServiceCollection services)
     {
         services.ConfigureTransactionHttpClient();
     }
-    
+
     private static void ConfigureTransactionHttpClient(this IServiceCollection services)
     {
         services.AddHttpClient<ITransactionRepository, TransactionRepository>("TransactionsApi", (sp, cl) =>
         {
             cl.BaseAddress = new Uri("https://my.sepay.vn/userapi");
         });
-        
+
         services.AddScoped(sp => sp.GetService<IHttpClientFactory>()
             .CreateClient("TransactionsApi"));
     }

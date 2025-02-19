@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace MinimalApi.Application.Features.Queries.Users;
+namespace Clothes.Application.Features.Queries.Users.GetUserById;
 
 public class GetUserByIdQueryValidator : AbstractValidator<GetUserByIdQuery>
 {

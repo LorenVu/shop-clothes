@@ -1,10 +1,10 @@
+using Clothes.Application.Common.Mappings;
+using Clothes.Application.Features.Common.Users;
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Application.Common.Map;
-using MinimalApi.Application.Features.Common;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.UpdateUser;
 
 public class UpdateUserCommand : CreateOrUpdateUserCommand, IRequest<ApiResult<User>>, IMapFrom<User>
 {

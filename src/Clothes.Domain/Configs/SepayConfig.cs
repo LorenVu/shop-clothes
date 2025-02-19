@@ -1,4 +1,4 @@
-namespace MinimalApi.Domain.Configs;
+namespace Clothes.Domain.Configs;
 
 public class SepayConfig
 {

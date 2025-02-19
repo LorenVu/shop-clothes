@@ -1,7 +1,7 @@
+using Clothes.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Domain.Entities;
 
-namespace MinimalApi.Infrastructure.Persistences;
+namespace Clothes.Infrastructure.Persistences;
 
 public class ApplicationDbContext : DbContext
 {
@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<District> Districts { get; set; }
     public DbSet<Ward> Wards { get; set; }
     public DbSet<Bank> Banks { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace MinimalApi.Application.Features.Commands.Banks.DeleteBank;
+namespace Clothes.Application.Features.Commands.Banks.DeleteBank;
 
 public class DeleteBankCommandValidation : AbstractValidator<DeleteBankCommand>
 {

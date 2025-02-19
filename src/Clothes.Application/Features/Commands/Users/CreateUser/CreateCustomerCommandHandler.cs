@@ -1,11 +1,11 @@
 using AutoMapper;
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Repositories.Interfaces;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.CreateUser;
 
 public class CreateCustomerCommandHandler(IUserRepository uerRepository, ILogger<CreateUserCommand> logger, IMapper mapper)
     : IRequestHandler<CreateUserCommand, ApiResult<Guid>>
@@ -14,7 +14,7 @@ public class CreateCustomerCommandHandler(IUserRepository uerRepository, ILogger
     {
         var customer = mapper.Map<User>(request);
         var result = await uerRepository.AddAsync(customer);
-        
+
         return ApiSuccessResult<Guid>.Instance.WithData(result);
     }
 }

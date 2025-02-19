@@ -1,17 +1,20 @@
 using System.Reflection;
+using Clothes.Application.Common.Behaviors;
+using Clothes.Application.Services.Authentication;
+using Clothes.Application.Services.Interfaces;
+using Clothes.Domain.Configs;
+using Clothes.Infrastructure.Repositories;
+using Clothes.Infrastructure.Repositories.Interfaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MinimalApi.Application.Common.Behaviors;
-using MinimalApi.Infrastructure.Repositories;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Shared.Requests;
 
-namespace MinimalApi.Application;
+namespace Clothes.Application;
 
 public static class ConfigureApplication
 {
-    public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
+    public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
             .AddAutoMapper(Assembly.GetExecutingAssembly())
@@ -23,8 +26,13 @@ public static class ConfigureApplication
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IBankRepository, BankRepository>();
-            
+
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddScoped<IJwtFactory, JwtFactory>();
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.Configure<JwtSettings>(settings => configuration.GetSection("JwtSettings"));
+
         return services;
     }
 }

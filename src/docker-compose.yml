@@ -10,6 +10,18 @@ services:
     
   redis:
     image: redis:alpine
+    
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:7.0.1
+  
+#  kafka:
+#    image: confluentinc/cp-kafka:7.0.1
+  
+#  kafka-ui:
+#    image: provectuslabs/kafka-ui
   
 #network section
 networks:

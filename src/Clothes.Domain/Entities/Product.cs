@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Clothes.Domain.Common;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using MinimalApi.Domain.Commnon;
-using MinimalApi.Domain.Common;
 
-namespace MinimalApi.Domain.Entities;
+namespace Clothes.Domain.Entities;
 
 [Table("Products")]
 public class Product : EntityAuditBase<long>, IStatusTracking
@@ -47,12 +46,12 @@ public class Product : EntityAuditBase<long>, IStatusTracking
     [Required]
     [Column("Stock")]
     public bool Stock { get; set; }
-    
+
     [Column("IsActive")]
     public int IsActive { get; set; }
-    
+
     [Column("IsDeleted")]
-    public int IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     [Required]
     [Column("CategoryId")]
@@ -61,12 +60,12 @@ public class Product : EntityAuditBase<long>, IStatusTracking
     [Required]
     [Column("BrandId")]
     public int BrandId { get; set; }
-    
+
     public virtual Category? Categories { get; set; }
 
     public virtual Brand? Brands { get; set; }
 
-    public virtual ICollection<Property>? Properties { get; set; } 
+    public virtual ICollection<Property>? Properties { get; set; }
     public virtual ICollection<ProductImage>? ProductImages { get; set; }
     public virtual ICollection<OrderItem>? Items { get; set; }
 

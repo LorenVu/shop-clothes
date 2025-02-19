@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>MinimalApi.Domain</RootNamespace>
+        <RootNamespace>Clothes.Domain</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

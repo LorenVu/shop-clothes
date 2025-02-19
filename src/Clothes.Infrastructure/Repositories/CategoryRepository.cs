@@ -1,12 +1,12 @@
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Persistences;
+using Clothes.Domain.Constracts;
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Persistences;
 
-namespace MinimalApi.Infrastructure.Repositories;
+namespace Clothes.Infrastructure.Repositories;
 
 public sealed class CategoryRepository(ApplicationDbContext context, IUnitOfWork unitOfWork) : RepositoryBase<Category, long>(context, unitOfWork), ICategoryRepository
 {
-    public Task<IQueryable<Category>> GetCategoriesPagination() => 
+    public Task<IQueryable<Category>> GetCategoriesPagination() =>
         Task.FromResult(GetAllAsync());
 
     public Task<Category> GetCategoryById(long id)
@@ -19,7 +19,7 @@ public sealed class CategoryRepository(ApplicationDbContext context, IUnitOfWork
 
     public Task UpDateCategory(Category category) =>
         UpdateAsync(category);
-    
+
     public Task DeleteCategory(Category category) =>
         DeleteAsync(category);
 

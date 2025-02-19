@@ -1,4 +1,4 @@
-namespace MinimalApi.Infrastructure.Shared;
+namespace Clothes.Infrastructure.Shared.Responses;
 
 public class ApiFailedResult<T> : ApiResult<T>
 {
@@ -14,9 +14,9 @@ public class ApiFailedResult<T> : ApiResult<T>
     {
     }
 
-    private static readonly Lazy<ApiFailedResult<T>> lazy = new (() => new ApiFailedResult<T>());
-    
-    public static ApiFailedResult<T> Instance => lazy.Value;
+    private static readonly Lazy<ApiFailedResult<T>> Lazy = new(() => new ApiFailedResult<T>());
+
+    public static ApiFailedResult<T> Instance => Lazy.Value;
 
     public ApiFailedResult<T> WithMessage(string message)
     {

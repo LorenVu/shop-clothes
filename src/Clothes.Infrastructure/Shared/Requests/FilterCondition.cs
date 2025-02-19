@@ -1,8 +1,7 @@
 using System.Text.Json.Serialization;
 
-namespace MinimalApi.Infrastructure.Shared.Requests;
+namespace Clothes.Infrastructure.Shared.Requests;
 
-public class FilterCondition
+public abstract class FilterCondition
 {
-
 }

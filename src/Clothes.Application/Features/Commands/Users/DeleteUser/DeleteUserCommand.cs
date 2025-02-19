@@ -1,6 +1,6 @@
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.DeleteUser;
 
 public record DeleteUserCommand(Guid Id) : IRequest<ApiResult<bool>>;

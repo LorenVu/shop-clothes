@@ -30,5 +30,54 @@ services:
     restart: always
     ports:
       - "6379:6379"
-
   
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+#  zookeeper:
+#    container_name: zookeeper
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    ports:
+#      - 22181:2181
+#    networks:
+#      - epay_networks
+#      
+#  kafka:
+#    container_name: kafka
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - "9092:9092"
+#      - "9093:9093"
+#    networks:
+#      - epay_networks
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+#      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+#      KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_C://0.0.0.0:9093,PLAINTEXT_L://0.0.0.0:9092,
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://broker:29092,PLAINTEXT_L://localhost:9092,PLAINTEXT_C://broker:9093
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_L:PLAINTEXT,PLAINTEXT_C:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+#      
+#  kafka-ui:
+#    container_name: kafka-ui
+#    networks:
+#      - epay_networks
+#    depends_on:
+#      - broker
+#    ports:
+#      - "7777:8080"
+#    restart: always
+#    environment:
+#      - KAFKA_CLUSTERS_0_NAME=broker
+#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker:9093
+#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181

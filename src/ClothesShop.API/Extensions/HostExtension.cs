@@ -1,4 +1,4 @@
-namespace MinimalProject.Extensions;
+namespace ClothesShop.API.Extensions;
 
 public static class HostExtension
 {

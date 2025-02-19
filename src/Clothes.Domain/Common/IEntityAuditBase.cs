@@ -1,6 +1,6 @@
-namespace MinimalApi.Domain.Commnon;
+namespace Clothes.Domain.Common;
 
-public interface IEntityAuditBase<TKey> : IEntityBase<TKey>, IUserTracking, IDatetimeTracking 
+public interface IEntityAuditBase<TKey> : IEntityBase<TKey>, IUserTracking, IDatetimeTracking
 {
-    
+
 }

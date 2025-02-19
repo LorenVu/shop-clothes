@@ -1,4 +1,4 @@
-namespace MinimalApi.Infrastructure.Shared.Requests;
+namespace Clothes.Infrastructure.Shared.Requests;
 
 public class PagingRequestParameters
 {
@@ -17,7 +17,7 @@ public class PagingRequestParameters
         get => _pageSize;
         set
         {
-            if(value > 0)
+            if (value > 0)
                 _pageSize = value > maxPageSize ? maxPageSize : value;
         }
     }

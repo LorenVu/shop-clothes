@@ -1,8 +1,8 @@
+using Clothes.Infrastructure.Repositories.Interfaces;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.DeleteUser;
 
 
 public class DeleteUserCommandHandler(IUserRepository userRepository)
@@ -14,7 +14,7 @@ public class DeleteUserCommandHandler(IUserRepository userRepository)
 
         if (customerEntity == null)
             return ApiFailedResult<bool>.Instance.WithMessage($"Customer with Id: {request.Id} does not exist");
-        
+
         userRepository.DeleteUserAsync(customerEntity);
         var result = await userRepository.SaveChangesAsync();
 

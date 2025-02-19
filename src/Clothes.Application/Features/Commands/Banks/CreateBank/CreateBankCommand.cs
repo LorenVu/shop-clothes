@@ -1,11 +1,11 @@
+using Clothes.Application.Common.Mappings;
+using Clothes.Application.Features.Common.Banks;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Application.Common.Map;
-using MinimalApi.Application.Features.Common.Banks;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Banks.CreateBank;
+namespace Clothes.Application.Features.Commands.Banks.CreateBank;
 
 public class CreateBankCommand : CreateAndUpdateBankCommand, IRequest<ApiResult<int>>, IMapFrom<CreateBankCommand>
 {
-    
+
 }

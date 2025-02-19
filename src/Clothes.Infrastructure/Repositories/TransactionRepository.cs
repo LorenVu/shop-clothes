@@ -1,17 +1,17 @@
 using System.Net.Http.Json;
+using Clothes.Domain.Configs;
+using Clothes.Domain.Constracts;
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Persistences;
+using Clothes.Infrastructure.Repositories.Interfaces;
+using Clothes.Infrastructure.Shared.Responses.ExternalApiResponse.Sepay;
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Domain.Configs;
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Persistences;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Shared.ExternalApiResponse.Sepay;
 using static System.String;
 
-namespace MinimalApi.Infrastructure.Repositories;
+namespace Clothes.Infrastructure.Repositories;
 
 public class TransactionRepository(
-    ApplicationDbContext context, 
+    ApplicationDbContext context,
     IUnitOfWork unitOfWork,
     HttpClient httpClient,
     SepayConfig sepayConfig
@@ -28,17 +28,17 @@ public class TransactionRepository(
 
     public async Task<Transaction?> GetTransactionByIdAsync(int id, CancellationToken token = default) =>
         await FindByIdAsync(id);
-        
+
     public Task<int> CreateTransactionAsync(Transaction entity) =>
         AddAsync(entity);
-    
+
     public Task<List<int>> CreateTransactionsAsync(IEnumerable<Transaction> entities) =>
         AddManyAsync(entities);
 
     public Task UpdateTransactionAsync(Transaction entity) =>
         UpdateAsync(entity);
-    
+
     public Task DeleteTransactionAsync(Transaction entity) =>
         DeleteAsync(entity);
-    
+
 }

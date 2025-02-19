@@ -1,11 +1,11 @@
+using Clothes.Application.Common.Mappings;
+using Clothes.Application.Features.Common.Users;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Application.Common.Map;
-using MinimalApi.Application.Features.Common;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.CreateUser;
 
 public class CreateUserCommand : CreateOrUpdateUserCommand, IRequest<ApiResult<Guid>>, IMapFrom<CreateUserCommand>
 {
-    
+
 }

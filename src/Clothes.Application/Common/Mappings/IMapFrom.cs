@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace MinimalApi.Application.Common.Map;
+namespace Clothes.Application.Common.Mappings;
 
 public interface IMapFrom<T>
 {

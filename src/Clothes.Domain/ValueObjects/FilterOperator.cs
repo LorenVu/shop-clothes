@@ -1,6 +1,6 @@
-namespace MinimalApi.Domain.ValueObjects;
+namespace Clothes.Domain.ValueObjects;
 
-public record FilterOperators (string Operator)
+public record FilterOperators(string Operator)
 {
     public static FilterOperators Equal { get; } = new("equals");
     public static FilterOperators NotEquals { get; } = new("notEquals");

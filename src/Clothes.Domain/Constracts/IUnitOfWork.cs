@@ -1,4 +1,4 @@
-namespace MinimalApi.Domain.Constracts;
+namespace Clothes.Domain.Constracts;
 
 public interface IUnitOfWork : IDisposable
 {

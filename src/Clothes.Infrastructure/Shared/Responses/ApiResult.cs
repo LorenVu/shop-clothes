@@ -1,4 +1,4 @@
-namespace MinimalApi.Infrastructure.Shared;
+namespace Clothes.Infrastructure.Shared.Responses;
 
 public class ApiResult<T>
 {

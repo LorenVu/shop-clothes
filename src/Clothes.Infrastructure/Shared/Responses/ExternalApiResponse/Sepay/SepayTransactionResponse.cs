@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
-using MinimalApi.Domain.Entities;
+using Clothes.Domain.Entities;
 
-namespace MinimalApi.Infrastructure.Shared.ExternalApiResponse.Sepay;
+namespace Clothes.Infrastructure.Shared.Responses.ExternalApiResponse.Sepay;
 
 public class SepayTransactionResponse : SepayBaseResponse<Transaction>
 {
-    [JsonPropertyName("transactions")] 
+    [JsonPropertyName("transactions")]
     public HashSet<Transaction> Transactions { get; set; } = [];
 }

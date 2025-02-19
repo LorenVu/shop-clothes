@@ -1,13 +1,13 @@
+using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Seeds;
+using Clothes.Infrastructure.Shared.Requests;
 using MediatR;
-using MinimalApi.Domain.Entities;
-using MinimalApi.Infrastructure.Seeds;
-using MinimalApi.Infrastructure.Shared.Requests;
 
-namespace MinimalApi.Application.Features;
+namespace Clothes.Application.Features.Queries.Banks.GetBanks;
 
-public class GetBanksPaginationQuery : 
-    QueryPagingBase,  
+public class GetBanksPaginationQuery :
+    QueryPagingBase,
     IRequest<PagedList<Bank>>
 {
-    
+
 }

@@ -1,6 +1,6 @@
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Banks.DeleteBank;
+namespace Clothes.Application.Features.Commands.Banks.DeleteBank;
 
 public record DeleteBankCommand(int Id) : IRequest<ApiResult<bool>>;

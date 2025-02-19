@@ -1,8 +1,8 @@
+using Clothes.Infrastructure.Repositories.Interfaces;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
-using MinimalApi.Infrastructure.Shared;
 
-namespace MinimalApi.Application.Features.Commands.Banks.DeleteBank;
+namespace Clothes.Application.Features.Commands.Banks.DeleteBank;
 
 public class DeleteBankCommandHandler(IBankRepository bankRepository) : IRequestHandler<DeleteBankCommand, ApiResult<bool>>
 {
@@ -12,11 +12,11 @@ public class DeleteBankCommandHandler(IBankRepository bankRepository) : IRequest
 
         if (bankEntity == null)
             return ApiFailedResult<bool>.Instance.WithMessage($"Bank with Id: {request.Id} does not exist");
-        
+
         bankRepository.DeleteBankAsync(bankEntity);
         var result = await bankRepository.SaveChangesAsync();
 
-        return result > 0 
+        return result > 0
             ? ApiSuccessResult<bool>.Instance.WithData(true)
             : ApiFailedResult<bool>.Instance.WithMessage("Failed");
     }

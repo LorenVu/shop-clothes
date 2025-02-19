@@ -1,7 +1,6 @@
-using MinimalApi.Infrastructure.Shared.Requests;
-using System.Linq.Dynamic.Core;
+using Clothes.Infrastructure.Shared.Requests;
 
-namespace MinimalApi.Application.Common.Extensions;
+namespace Clothes.Application.Common.Extensions;
 
 public static class QueryableExtensions
 {
@@ -14,18 +13,18 @@ public static class QueryableExtensions
         // }
         return query;
     }
-    
+
     public static IQueryable<T> Ordering<T>(this IQueryable<T> query, IEnumerable<OrderCondition> sorts)
     {
         // foreach (var sort in sorts)
         // {
         //     query.OrderBy($"{sort.Field} {sort.Direction}");
         // }
-        
+
         return query;
     }
-    
-    
+
+
     private static string GetOperator(string operatorKey)
     {
         return operatorKey switch

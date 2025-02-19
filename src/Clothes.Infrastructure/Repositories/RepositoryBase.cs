@@ -1,10 +1,10 @@
 using System.Linq.Expressions;
+using Clothes.Domain.Common;
+using Clothes.Domain.Constracts;
+using Clothes.Infrastructure.Persistences;
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.Domain.Commnon;
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Infrastructure.Persistences;
 
-namespace MinimalApi.Infrastructure.Repositories;
+namespace Clothes.Infrastructure.Repositories;
 
 public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, IUnitOfWork unitOfWork)
     : IRepositoryBase<TEntity, TK>
@@ -17,13 +17,13 @@ public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, 
 
     public IQueryable<TEntity> GetAllAsync(bool trackChanges = false, params Expression<Func<TEntity, TK>>[] includeProperties)
     {
-        var entities = trackChanges 
-            ? context.Set<TEntity>() 
+        var entities = trackChanges
+            ? context.Set<TEntity>()
             : context.Set<TEntity>().AsNoTracking();
-        
-        var aggregate = includeProperties.Aggregate(entities, (current, includeProperty) 
+
+        var aggregate = includeProperties.Aggregate(entities, (current, includeProperty)
             => current.Include(includeProperty));
-        
+
         return aggregate;
     }
 
@@ -33,16 +33,16 @@ public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, 
     public IQueryable<TEntity> FindByConditionAsync(Expression<Func<TEntity, bool>> predicate, bool trackChanges = false, params Expression<Func<TEntity, bool>>[] includeProperties)
     {
         var entities = GetAllAsync(trackChanges).Where(predicate);
-        var aggregate = includeProperties.Aggregate(entities, (current, includeProperty) 
+        var aggregate = includeProperties.Aggregate(entities, (current, includeProperty)
             => current.Include(includeProperty));
-        
+
         return aggregate;
     }
 
     public Task<TEntity?> FindByIdAsync(TK id) =>
         FindByConditionAsync(x => x.Id != null && x.Id.Equals(id), true).FirstOrDefaultAsync();
 
-    public Task<TEntity?> FindByIdAsync(TK id, params Expression<Func<TEntity, bool>>[] includeProperties) => 
+    public Task<TEntity?> FindByIdAsync(TK id, params Expression<Func<TEntity, bool>>[] includeProperties) =>
         FindByConditionAsync(x => x.Id != null && x.Id.Equals(id), false, includeProperties).FirstOrDefaultAsync();
 
     public async Task<TK> AddAsync(TEntity entity)
@@ -72,7 +72,7 @@ public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, 
         context.Set<TEntity>().Remove(entity);
         return Task.CompletedTask;
     }
-        
+
     public Task DeleteManyAsync(IEnumerable<TEntity> entities)
     {
         context.Set<TEntity>().RemoveRange(entities);
@@ -81,5 +81,5 @@ public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, 
 
     public async Task<int> SaveChangesAsync() =>
         await unitOfWork.SaveChangesAsync();
-    
+
 }

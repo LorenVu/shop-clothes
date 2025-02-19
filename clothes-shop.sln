@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{06FB2611-B42D-47F8-9415-C47D44957A4B}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clothes.Domain", "src\Clothes.Domain\Clothes.Domain.csproj", "{09CE62FA-EC21-44EA-A461-3FF6B448D88C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clothes.Application", "src\Clothes.Application\Clothes.Application.csproj", "{A998AD4A-AFDF-4563-872A-C704CDB8685C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlock", "BuildingBlock\BuildingBlock.csproj", "{FEF1809B-A4E8-4870-AF32-958550F3C94D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{A998AD4A-AFDF-4563-872A-C704CDB8685C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A998AD4A-AFDF-4563-872A-C704CDB8685C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A998AD4A-AFDF-4563-872A-C704CDB8685C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEF1809B-A4E8-4870-AF32-958550F3C94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF1809B-A4E8-4870-AF32-958550F3C94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF1809B-A4E8-4870-AF32-958550F3C94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF1809B-A4E8-4870-AF32-958550F3C94D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +66,6 @@ Global
 		{DF62BC3C-AC19-4CD4-A6B9-60F2C6814E89} = {06FB2611-B42D-47F8-9415-C47D44957A4B}
 		{09CE62FA-EC21-44EA-A461-3FF6B448D88C} = {06FB2611-B42D-47F8-9415-C47D44957A4B}
 		{A998AD4A-AFDF-4563-872A-C704CDB8685C} = {06FB2611-B42D-47F8-9415-C47D44957A4B}
+		{FEF1809B-A4E8-4870-AF32-958550F3C94D} = {06FB2611-B42D-47F8-9415-C47D44957A4B}
 	EndGlobalSection
 EndGlobal

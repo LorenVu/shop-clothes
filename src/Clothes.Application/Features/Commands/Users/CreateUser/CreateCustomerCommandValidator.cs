@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace MinimalApi.Application.Features.Commands.Users;
+namespace Clothes.Application.Features.Commands.Users.CreateUser;
 
 public class CreateCustomerCommandValidator : AbstractValidator<CreateUserCommand>
 {

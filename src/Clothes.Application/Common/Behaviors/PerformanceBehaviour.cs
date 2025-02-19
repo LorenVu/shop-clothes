@@ -2,7 +2,7 @@ using System.Diagnostics;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace MinimalApi.Application.Common.Behaviors;
+namespace Clothes.Application.Common.Behaviors;
 
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
@@ -22,11 +22,11 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         _stopwatch.Start();
         var response = await next();
         _stopwatch.Stop();
-        
+
         var elapsedMilliseconds = _stopwatch.ElapsedMilliseconds;
         if (elapsedMilliseconds >= 500)
             _logger.LogInformation("Application Long Running Request: {requestName} ({elapsedMilliseconds} milliseconds))", typeof(TRequest).Name, elapsedMilliseconds);
-            
+
         return response;
     }
 }

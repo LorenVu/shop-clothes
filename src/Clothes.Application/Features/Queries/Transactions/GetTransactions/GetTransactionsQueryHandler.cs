@@ -1,16 +1,16 @@
 using System.Text;
 using AutoMapper;
+using Clothes.Application.Common.Dtos;
+using Clothes.Domain.Configs;
+using Clothes.Infrastructure.Repositories.Interfaces;
 using MediatR;
-using MinimalApi.Application.Common.Dtos;
-using MinimalApi.Domain.Configs;
-using MinimalApi.Infrastructure.Repositories.Interfaces;
 
-namespace MinimalApi.Application.Features.Queries;
+namespace Clothes.Application.Features.Queries.Transactions.GetTransactions;
 
-public class GetTransactionQueryHandler(ITransactionRepository transactionRepository,
-    SepayConfig sepayConfig, IMapper mapper) : IRequestHandler<GetTransactionQuery, IEnumerable<TransactionDto>>
+public class GetTransactionsQueryHandler(ITransactionRepository transactionRepository,
+    SepayConfig sepayConfig, IMapper mapper) : IRequestHandler<GetTransactionsQuery, IEnumerable<TransactionDto>>
 {
-    public async Task<IEnumerable<TransactionDto>> Handle(GetTransactionQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TransactionDto>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
     {
         var urlStringBuilder = new StringBuilder($"{sepayConfig.BaseUrl}/{sepayConfig.TransactionEndpoints.BaseEndpoint}/{sepayConfig.TransactionEndpoints.List}");
 
@@ -18,17 +18,17 @@ public class GetTransactionQueryHandler(ITransactionRepository transactionReposi
         //     urlStringBuilder.Append(GenerateQueryPath(request));
 
         var url = urlStringBuilder.ToString();
-        
+
         var transactions = await transactionRepository.GetTransactionsAsync(url, cancellationToken);
         var result = mapper.Map<IEnumerable<TransactionDto>>(transactions);
-        
+
         return result;
     }
 
-    private string GenerateQueryPath(GetTransactionQuery request)
+    private string GenerateQueryPath(GetTransactionsQuery request)
     {
         var stringBuilder = new StringBuilder("?");
-     
+
         void AppendIfValid<T>(string paramName, T value, Func<T, bool> condition)
         {
             if (condition(value))
@@ -36,7 +36,7 @@ public class GetTransactionQueryHandler(ITransactionRepository transactionReposi
         }
 
         var filter = request.Filter;
-        
+
         if (!string.IsNullOrWhiteSpace(filter.AccountNumber))
             stringBuilder.Append($"&account_number={filter.AccountNumber}");
 
@@ -44,9 +44,9 @@ public class GetTransactionQueryHandler(ITransactionRepository transactionReposi
         AppendIfValid("amount_in", filter.AmountIn, x => x > 0);
         AppendIfValid("amount_out", filter.AmountOut, x => x > 0);
         AppendIfValid("reference_number", filter.ReferenceNumber, x => x > 0);
-        AppendIfValid("transaction_date_min", filter.TransactionDateMin, 
+        AppendIfValid("transaction_date_min", filter.TransactionDateMin,
             x => x > DateTimeOffset.MinValue);
-        AppendIfValid("transaction_date_max", filter.TransactionDateMax, 
+        AppendIfValid("transaction_date_max", filter.TransactionDateMax,
             x => x > DateTimeOffset.MinValue);
 
         if (filter.TransactionDateMin > DateTimeOffset.MinValue)

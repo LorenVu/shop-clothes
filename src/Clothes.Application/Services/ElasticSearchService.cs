@@ -1,6 +1,6 @@
-namespace MinimalApi.Application.Services;
+namespace Clothes.Application.Services;
 
 public class ElasticSearchService
 {
-    
+
 }

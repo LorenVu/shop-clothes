@@ -1,6 +1,6 @@
-using MinimalApi.Application;
-using MinimalApi.Infrastructure;
-using MinimalProject.Extensions;
+using Clothes.Application;
+using Clothes.Infrastructure;
+using ClothesShop.API.Extensions;
 
 try
 {
@@ -9,15 +9,13 @@ try
     builder.Services.ConfigurePostgresDbContext(builder.Configuration);
 // Add services to the container.
     builder.Services.Configuration();
-    builder.Services.ConfigureApplicationServices();
+    builder.Services.ConfigureApplicationServices(builder.Configuration);
     builder.Services.ConfigureInfrastructureServices();
     builder.Services.AddConfigurationSettings(builder.Configuration);
-    builder.Services.AddMinimalEndpoints();
     builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+    builder.Services.AddControllers();
 
     var app = builder.Build();
-
-    app.RegisterMinimalEndpoints();
 
 // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())

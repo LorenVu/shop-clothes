@@ -1,4 +1,4 @@
-namespace MinimalApi.Domain.Enums;
+namespace Clothes.Domain.Enums;
 
 public enum EStatusBase
 {

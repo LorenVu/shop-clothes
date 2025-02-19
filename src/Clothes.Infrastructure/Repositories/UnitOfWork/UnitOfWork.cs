@@ -1,7 +1,7 @@
-using MinimalApi.Domain.Constracts;
-using MinimalApi.Infrastructure.Persistences;
+using Clothes.Domain.Constracts;
+using Clothes.Infrastructure.Persistences;
 
-namespace MinimalApi.Infrastructure.Repositories.UnitOfWork;
+namespace Clothes.Infrastructure.Repositories.UnitOfWork;
 
 public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
 {

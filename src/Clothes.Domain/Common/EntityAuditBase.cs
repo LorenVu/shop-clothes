@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using MinimalApi.Domain.Commnon;
 
-namespace MinimalApi.Domain.Common;
+namespace Clothes.Domain.Common;
 
 public abstract class EntityAuditBase<TKey> : EntityBase<TKey>, IEntityAuditBase<TKey>
 {

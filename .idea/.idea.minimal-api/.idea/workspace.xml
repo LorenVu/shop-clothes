@@ -9,6 +9,7 @@
     <projectFile profileName="http">MinimalProject/MinimalProject.csproj</projectFile>
     <projectFile profileName="https">MinimalProject/MinimalProject.csproj</projectFile>
     <projectFile>src/GrpcProject/GrpcProject.csproj</projectFile>
+    <projectFile profileName="dev-no-browser">src/MinimalApi.WebApi/MinimalApi.WebApi.csproj</projectFile>
     <projectFile profileName="IIS Express">src/MinimalApi/MinimalApi.csproj</projectFile>
     <projectFile profileName="https">src/MinimalApi/MinimalApi.csproj</projectFile>
     <projectFile profileName="no-launch-browser">src/MinimalApi/MinimalApi.csproj</projectFile>
@@ -498,14 +499,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/src/Clothes.Infrastructure/Repositories/TransactionRepository.cs</url>
           <line>22</line>
-          <properties documentPath="C:\Users\longvn\Desktop\minimal-api\src\MinimalApi.Infrastructure\Repositories\TransactionRepository.cs" containingFunctionPresentation="Method 'GetTransactionsAsync'">
-            <startOffsets>
-              <option value="886" />
-            </startOffsets>
-            <endOffsets>
-              <option value="958" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\longvn\Desktop\minimal-api\src\MinimalApi.Infrastructure\Repositories\TransactionRepository.cs" containingFunctionPresentation="Method 'GetTransactionsAsync'" />
           <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MinimalApi.Domain.Common;
+using Clothes.Domain.Common;
 
-namespace MinimalApi.Domain.Entities;
+namespace Clothes.Domain.Entities;
 
 [Table("Brands")]
 public class Brand : EntityAuditBase<int>

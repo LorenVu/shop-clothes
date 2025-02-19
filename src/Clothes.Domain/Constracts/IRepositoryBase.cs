@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using MinimalApi.Domain.Commnon;
+using Clothes.Domain.Common;
 
-namespace MinimalApi.Domain.Constracts;
+namespace Clothes.Domain.Constracts;
 
 public interface IRepositoryQueryBase<TEntity, K>
     where TEntity : EntityBase<K>
@@ -9,7 +9,7 @@ public interface IRepositoryQueryBase<TEntity, K>
     IQueryable<TEntity> GetAllAsync(bool trackChanges = false);
     IQueryable<TEntity> GetAllAsync(bool trackChanges = false, params Expression<Func<TEntity, K>>[] includeProperties);
     IQueryable<TEntity> FindByConditionAsync(Expression<Func<TEntity, bool>> predicate, bool trackChanges = false);
-    IQueryable<TEntity> FindByConditionAsync(Expression<Func<TEntity, bool>> predicate , bool trackChanges = false, params Expression<Func<TEntity, bool>>[] includeProperties);
+    IQueryable<TEntity> FindByConditionAsync(Expression<Func<TEntity, bool>> predicate, bool trackChanges = false, params Expression<Func<TEntity, bool>>[] includeProperties);
     Task<TEntity?> FindByIdAsync(K id);
     Task<TEntity?> FindByIdAsync(K id, params Expression<Func<TEntity, bool>>[] includeProperties);
 }
