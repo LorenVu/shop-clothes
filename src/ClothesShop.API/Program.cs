@@ -8,13 +8,15 @@ try
 
     builder.Services.ConfigurePostgresDbContext(builder.Configuration);
 // Add services to the container.
-    builder.Services.Configuration();
+    builder.Services.Configuration(builder.Configuration);
     builder.Services.ConfigureApplicationServices(builder.Configuration);
     builder.Services.ConfigureInfrastructureServices();
     builder.Services.AddConfigurationSettings(builder.Configuration);
     builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
-
+    //builder.Services.AddHealthCheck();
+    builder.Services.AddEndpointsApiExplorer(); 
+    
     var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,8 +30,12 @@ try
             Results.Redirect("~/swagger")
         );
     }
-
+    
+    if (app.Environment.IsProduction())
+        app.UseHttpsRedirection();
+    
     app.UseInfrastructure(builder);
+    app.MapControllers();
     app.Run();
 }
 catch(Exception e)

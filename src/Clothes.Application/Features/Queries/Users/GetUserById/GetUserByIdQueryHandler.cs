@@ -21,7 +21,7 @@ public class GetUserByIdQueryHandler(IUserRepository iUserRepository) : IRequest
                 PictureUrl = user.PictureUrl,
                 EmailAddress = user.EmailAddress,
                 IsDeleted = user.IsDeleted,
-                IsActive = user.IsActive
+                Status = user.Status
             }
             : null;
     }

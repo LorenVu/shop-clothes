@@ -19,8 +19,8 @@ public class ProductProperty : EntityBase<int>, IStatusTracking
     [Column("product_id")]
     public long ProductId { get; set; }
     
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
 
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }

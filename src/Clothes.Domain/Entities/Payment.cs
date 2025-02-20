@@ -32,8 +32,8 @@ public class Payment : EntityAuditBase<int>, IStatusTracking
     [Column("status_id")]
     public int StatusId { get; set; }
     
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
 
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }

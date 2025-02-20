@@ -43,16 +43,18 @@ public class Order : EntityAuditBase<long>, IStatusTracking
     [Column("user_id")]
     public Guid UserId { get; init; }
     
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
 
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 
-    public virtual Payment? Payments { get; init; }
+    [Column("order_status_id")]
+    public int OrderStatusId { get; set; }
 
+    public virtual Payment? Payments { get; init; }
     public virtual ICollection<OrderItem>? Items { get; init; }
-    public virtual OrderStatus? OrderStatus { get; set; }
+    public virtual OrderStatus? OrderStatus { get; init; }
 
     public void ModifyStatus(int statusId)
     {

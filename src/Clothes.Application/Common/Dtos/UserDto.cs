@@ -9,7 +9,7 @@ public class UserDto
     public string? LastName { get; init; }
     public string? PictureUrl { get; init; }
     public string? EmailAddress { get; init; }
-    public int IsActive { get; init; }
+    public int Status { get; init; }
     public bool IsDeleted { get; init; }
     public List<string>? Roles { get; set; }
 }

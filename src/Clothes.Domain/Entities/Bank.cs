@@ -26,10 +26,9 @@ public class Bank : EntityAuditBase<int>, IStatusTracking
     [Required]
     [Column("balance", TypeName = "decimal(18,2)")]
     public decimal Balance { get; private set; }
-
-
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
+    
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
     
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }

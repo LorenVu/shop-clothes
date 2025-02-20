@@ -8,10 +8,12 @@ public static class ApplicationExtensions
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
             $"{builder.Environment.ApplicationName} v1"));
 
-        //app.UseAuthentication();
+        app.UseResponseCompression();
+        app.UseCors("AllowAll");
         app.UseRouting();
-        //app.UseHttpsRedirection(); //for production only
-
-        //app.UseAuthorization();
+        app.UseResponseCaching();
+        app.UseRequestTimeouts();
+        app.UseAuthentication();
+        app.UseAuthorization();
     }
-}
+}   

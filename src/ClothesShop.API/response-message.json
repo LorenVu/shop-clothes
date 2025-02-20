@@ -1,0 +1,26 @@
+﻿{
+  "ResponseMessageConfig": {
+    "Values": {
+      "0000": "Thành công",
+      
+      "3001": "Dữ liệu không hợp lệ.",
+      "3002": "Chưa xác thực máy trạm truy cập vào tài nguyên.",
+      "3003": "Tài khoản không có quyền truy cập chức năng.",
+      "3004": "Không tìm thấy dữ liệu.",
+      "3005": "Lỗi hệ thống. Vui lòng quay lại sau vài phút",
+      "3006": "Mất kết nối hoặc đường truyền quá chậm. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau vài phút",
+      "3007": "Hệ thống đang nâng cấp. Vui lòng quay lại sau!",
+      "3008": "Token đã hết hạn. Vui lòng đăng nhập lại!",
+      "3009": "Dữ liệu {0} không hợp lệ.",
+      "3010": "Đường dẫn không tồn tại.",
+      "3011": "Bạn không có quyền truy cập.",
+      "3012": "Method không hợp lệ.",
+      "3013": "Mất kết nối hoặc đường truyền quá chậm. Quý khách vui lòng kiểm tra kết nối mạng hoặc thử lại sau ít phút.",
+      "3014": "Quá trình xử lý yêu cầu với hệ thống Quản trị sinh trắc học xảy ra lỗi.",
+      
+      "4000": "Tài khoản không tồn tại",
+      "4001": "Đăng nhập thất bại: Mật khẩu không đúng. Còn {0} lần nhập",
+      "4003": "Đăng nhập thất bại: Mật khẩu sai quá 5 lần. Thực hiện lại sau 5 phút."
+    }
+  }
+}

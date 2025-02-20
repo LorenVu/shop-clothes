@@ -26,7 +26,6 @@
     <ItemGroup>
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Validators\" />
-      <Folder Include="Features\Commands\Users\" />
     </ItemGroup>
 
 </Project>

@@ -42,8 +42,8 @@ public class Customer : EntityAuditBase<Guid>, IStatusTracking
     [Column("salt", TypeName = "varchar(255)")]
     public string Salt { get; private set; }
 
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
     
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }

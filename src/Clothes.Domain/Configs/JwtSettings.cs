@@ -1,10 +1,10 @@
 namespace Clothes.Domain.Configs;
 
-public class JwtSettings
+public sealed class JwtSettings
 {
-    public string SecretKey { get; set; }
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
-    public int AccessTokenExpiration { get; set; }
-    public int RefreshTokenExpiration { get; set; }
+    public string? SecretKey { get; private set; }
+    public string? Issuer { get; private set; }
+    public string? Audience { get; private set; }
+    public int AccessTokenExpiration { get; private set; }
+    public int RefreshTokenExpiration { get; private set; }
 }

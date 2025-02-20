@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clothes.Application.Features.Common.Banks;
 
-public class CreateAndUpdateBankCommand
+public abstract class CreateAndUpdateBankCommand
 {
     public string Name { get; set; }
 

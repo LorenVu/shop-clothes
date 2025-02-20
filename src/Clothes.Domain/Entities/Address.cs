@@ -25,9 +25,9 @@ public class Address : EntityAuditBase<int>, IStatusTracking
     [Column("postal_code", TypeName = "varchar(255)")]
     public string PostalCode { get; private set; }
 
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
-    
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
+
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 

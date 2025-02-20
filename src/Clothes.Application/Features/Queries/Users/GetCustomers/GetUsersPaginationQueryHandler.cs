@@ -22,7 +22,7 @@ public class GetUsersPaginationQueryHandler(IUserRepository userRepository)
                 PictureUrl = u.PictureUrl,
                 EmailAddress = u.EmailAddress,
                 IsDeleted = u.IsDeleted,
-                IsActive = u.IsActive
+                Status = u.Status
             });
 
         // if (request.Filters is { Count: > 0 })

@@ -1,3 +1,6 @@
+using Clothes.Domain.Configs;
+using Clothes.Domain.Extensions;
+
 namespace Clothes.Infrastructure.Shared.Responses;
 
 public class ApiFailedResult<T> : ApiResult<T>
@@ -18,9 +21,20 @@ public class ApiFailedResult<T> : ApiResult<T>
 
     public static ApiFailedResult<T> Instance => Lazy.Value;
 
-    public ApiFailedResult<T> WithMessage(string message)
+    public ApiFailedResult<T> WithMessage(CodeResponseMessage codeResponseMessage)
     {
-        Instance.Message = message;
+        Instance.Message = GetMessage(this.Message, codeResponseMessage);
         return Instance;
     }
+    
+    #region Method
+
+    private static string GetMessage(string? input, CodeResponseMessage codeResponseMessage)
+    {
+        return string.IsNullOrEmpty(input) 
+            ? ResponseMessageConfig.GetMessage(codeMessage: codeResponseMessage) 
+            : input.RemoveSpaceCharacter();
+    }
+    
+    #endregion
 }

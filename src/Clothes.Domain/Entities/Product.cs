@@ -43,15 +43,15 @@ public class Product : EntityAuditBase<long>, IStatusTracking
     [Column("stock")]
     public bool Stock { get; init; }
 
-    [Column("is_active", TypeName = "int4")]
-    public int IsActive { get; set; }
+    [Column("status", TypeName = "int4")]
+    public int Status { get; set; }
 
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 
     [Required]
     [Column("category_id")]
-    public int CategoryId { get; private set; }
+    public long CategoryId { get; private set; }
 
     [Required]
     [Column("brand_id")]
