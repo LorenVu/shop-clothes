@@ -4,21 +4,25 @@ using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
 
-[Table("ProductImages")]
-public class ProductImage : EntityAuditBase<int>
+[Table("product_images")]
+public class ProductImage : EntityAuditBase<int>, IStatusTracking
 {
     [Required]
-    [Column("OriginLinkImage")]
-    [MaxLength(2000)]
-    public string? OriginLinkImage { get; set; }
+    [Column("origin_link_image", TypeName = "varchar(2000)")]
+    public string? OriginLinkImage { get; init; }
 
-    [Column("LocalLinkImage")]
-    [MaxLength(2000)]
-    public string? LocalLinkImage { get; set; }
+    [Column("local_link_image", TypeName = "varchar(2000)")]
+    public string? LocalLinkImage { get; init; }
 
     [Required]
-    [Column("ProductId")]
-    public long ProductId { get; set; }
+    [Column("product_id")]
+    public long ProductId { get; init; }
+    
+    [Column("is_active", TypeName = "int4")]
+    public int IsActive { get; set; }
 
-    public virtual Product? Product { get; set; }
+    [Column("is_deleted")]
+    public bool IsDeleted { get; set; }
+
+    public virtual Product? Product { get; init; }
 }

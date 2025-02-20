@@ -4,26 +4,19 @@ using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
 
-[Table("OrderStatus")]
+[Table("order_status")]
 public class OrderStatus : EntityAuditBase<int>
 {
     [Required]
-    [Column("Type")]
-    [StringLength(100)]
-    public string? Type { get; set; }
+    [Column("type", TypeName = "varchar(100)")]
+    public string? Type { get; init; }
 
     [Required]
-    [Column("Display")]
-    public bool Display { get; set; }
+    [Column("display", TypeName = "varchar(100)")]
+    public bool Display { get; init; }
 
-    [Column("Code")]
-    [StringLength(100)]
-    public string? Code { get; set; }
+    [Column("code", TypeName = "varchar(100)")]
+    public string? Code { get; init; }
 
-    [Required]
-    [Column("OrderId")]
-    public int OrderId { get; set; }
-
-    public virtual ICollection<Payment>? Payments { get; set; }
     public virtual ICollection<Order>? Orders { get; set; }
 }

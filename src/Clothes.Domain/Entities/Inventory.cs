@@ -4,22 +4,28 @@ using Clothes.Domain.Enums;
 
 namespace Clothes.Domain.Entities;
 
-[Table("Inventories")]
+[Table("inventories")]
 public class Inventory : EntityAuditBase<string>
 {
-    public Inventory(string itemNo, string documentNo)
+    public Inventory(EDocumentType documentType, string documentNo, string itemNo)
     {
-        ItemNo = itemNo;
+        DocumentType = documentType;
         DocumentNo = documentNo;
+        ItemNo = itemNo;
     }
 
-    public EDocumentType DocumentType { get; set; }
+    [Column("document_type")]
+    public EDocumentType DocumentType { get; private set; }
 
-    public string DocumentNo { get; set; }
+    [Column("document_no", TypeName = "varchar(100)")]
+    public string DocumentNo { get; private set; }
 
-    public string ItemNo { get; set; }
+    [Column("item_no", TypeName = "varchar(100)")]
+    public string ItemNo { get; private set; }
 
+    [Column("quantity")]
     public int Quantity { get; set; }
 
+    [Column("external_document_no", TypeName = "varchar(100)")]
     public string? ExternalDocumentNo { get; set; }
 }

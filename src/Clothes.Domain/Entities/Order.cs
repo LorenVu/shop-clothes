@@ -4,48 +4,58 @@ using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
 
-[Table("Orders")]
-public class Order : EntityAuditBase<long>
+[Table("orders")]
+public class Order : EntityAuditBase<long>, IStatusTracking
 {
     [Required]
-    [Column("Name")]
-    [MaxLength(100)]
-    public string? Name { get; set; }
+    [Column("name", TypeName = "varchar(100)")]
+    public string? Name { get; init; }
 
-    [Column("CustomerName")]
-    [MaxLength(100)]
-    public string? CustomerName { get; set; }
-
-    [Column("Address")]
-    [MaxLength(100)]
-    public string? Address { get; set; }
-
-    [Column("PhoneNumber")]
-    [MaxLength(12)]
-    public string? PhoneNumber { get; set; }
+    [Column("customer_name", TypeName = "varchar(100)")]
+    public string? CustomerName { get; init; }
 
     [Required]
-    [Column("TotalAmount")]
-    public double TotalAmount { get; set; }
-
-    [Column("Note")]
-    public string? Note { get; set; }
-
-    [Column("CancelReason")]
-    public string? CancelReason { get; set; }
+    [Column("address", TypeName = "varchar(100)")]
+    public string? Address { get; init; }
 
     [Required]
-    [Column("PaymentId")]
-    public int PaymentId { get; set; }
-
-    [Column("StatusId")]
-    public int StatusId { get; set; }
+    [Column("phone_number", TypeName = "varchar(12)")]
+    public string? PhoneNumber { get; init; }
 
     [Required]
-    [Column("UserId")]
-    public Guid UserId { get; set; }
+    [Column("total_amount", TypeName = "varchar(12)")]
+    public double TotalAmount { get; init; }
 
-    public virtual ICollection<Payment>? Payments { get; set; }
+    [Column("note", TypeName = "varchar(255)")]
+    public string? Note { get; init; }
 
-    public virtual ICollection<OrderItem>? Items { get; set; }
+    [Column("cancel_reason", TypeName = "varchar(255)")]
+    public string? CancelReason { get; init; }
+
+    [Required]
+    [Column("payment_id")]
+    public int PaymentId { get; init; }
+
+    [Column("status_id")]
+    public int StatusId { get; private set; }
+
+    [Required]
+    [Column("user_id")]
+    public Guid UserId { get; init; }
+    
+    [Column("is_active", TypeName = "int4")]
+    public int IsActive { get; set; }
+
+    [Column("is_deleted")]
+    public bool IsDeleted { get; set; }
+
+    public virtual Payment? Payments { get; init; }
+
+    public virtual ICollection<OrderItem>? Items { get; init; }
+    public virtual OrderStatus? OrderStatus { get; set; }
+
+    public void ModifyStatus(int statusId)
+    {
+        this.StatusId = statusId;
+    }
 }

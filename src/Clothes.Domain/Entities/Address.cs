@@ -7,32 +7,48 @@ namespace Clothes.Domain.Entities;
 [Table("address")]
 public class Address : EntityAuditBase<int>, IStatusTracking
 {
+    public Address(string addresses, string addressType, string postalCode)
+    {
+        Addresses = addresses;
+        AddressType = addressType;
+        PostalCode = postalCode;
+    }
+
     [Required]
     [Column("addresses", TypeName = "varchar(255)")]
     public string Addresses { get; private set; }
 
     [Required]
-    [Column(TypeName = "varchar(15)")]
+    [Column("address_type", TypeName = "varchar(15)")]
     public string AddressType { get; private set; }
 
-    [Column(TypeName = "varchar(255)")]
+    [Column("postal_code", TypeName = "varchar(255)")]
     public string PostalCode { get; private set; }
+
+    [Column("is_active", TypeName = "int4")]
     public int IsActive { get; set; }
+    
+    [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 
     //RelationShip
-    public int CountryId { get; private set; }
-    public Country Country { get; set; } = null!;
+    [Column("country_id")]
+    public int CountryId { get; set; }
 
-    public int ProvinceId { get; private set; }
-    public Province Province { get; set; } = null!;
+    public Country Country { get; init; }
 
+    [Column("province_id")]
+    public int ProvinceId { get; set; }
+
+    public Province Province { get; init; }
+
+    [Column("district_id")]
     public int DistrictId { get; set; }
-    public District District { get; set; } = null!;
 
-    public int WardId { get; private set; }
-    public Ward Ward { get; set; } = null!;
+    public District District { get; init; }
 
-    public Guid UserId { get; private set; }
-    public User User { get; set; } = null!;
+    [Column("ward_id")]
+    public int WardId { get; set; }
+
+    public Ward Ward { get; init; }
 }

@@ -15,9 +15,9 @@ public class TransactionRepository(
     IUnitOfWork unitOfWork,
     HttpClient httpClient,
     SepayConfig sepayConfig
-    ) : RepositoryBase<Transaction, int>(context, unitOfWork), ITransactionRepository
+    ) : RepositoryBase<SepayTransaction, int>(context, unitOfWork), ITransactionRepository
 {
-    public async Task<IEnumerable<Transaction>> GetTransactionsAsync(string url, CancellationToken token = default)
+    public async Task<IEnumerable<SepayTransaction>> GetTransactionsAsync(string url, CancellationToken token = default)
     {
         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {sepayConfig.ApiToken}");
         var response = await httpClient.GetAsync(url, cancellationToken: token);
@@ -26,19 +26,19 @@ public class TransactionRepository(
         return result.Transactions;
     }
 
-    public async Task<Transaction?> GetTransactionByIdAsync(int id, CancellationToken token = default) =>
+    public async Task<SepayTransaction?> GetTransactionByIdAsync(int id, CancellationToken token = default) =>
         await FindByIdAsync(id);
 
-    public Task<int> CreateTransactionAsync(Transaction entity) =>
+    public Task<int> CreateTransactionAsync(SepayTransaction entity) =>
         AddAsync(entity);
 
-    public Task<List<int>> CreateTransactionsAsync(IEnumerable<Transaction> entities) =>
+    public Task<List<int>> CreateTransactionsAsync(IEnumerable<SepayTransaction> entities) =>
         AddManyAsync(entities);
 
-    public Task UpdateTransactionAsync(Transaction entity) =>
+    public Task UpdateTransactionAsync(SepayTransaction entity) =>
         UpdateAsync(entity);
 
-    public Task DeleteTransactionAsync(Transaction entity) =>
+    public Task DeleteTransactionAsync(SepayTransaction entity) =>
         DeleteAsync(entity);
 
 }

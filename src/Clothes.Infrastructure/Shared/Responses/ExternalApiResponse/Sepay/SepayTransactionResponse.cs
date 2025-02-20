@@ -3,8 +3,8 @@ using Clothes.Domain.Entities;
 
 namespace Clothes.Infrastructure.Shared.Responses.ExternalApiResponse.Sepay;
 
-public class SepayTransactionResponse : SepayBaseResponse<Transaction>
+public class SepayTransactionResponse : SepayBaseResponse<SepayTransaction>
 {
     [JsonPropertyName("transactions")]
-    public HashSet<Transaction> Transactions { get; set; } = [];
+    public HashSet<SepayTransaction> Transactions { get; set; } = [];
 }

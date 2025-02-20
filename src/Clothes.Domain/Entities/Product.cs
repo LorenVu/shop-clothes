@@ -5,68 +5,75 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Clothes.Domain.Entities;
 
-[Table("Products")]
+[Table("products")]
 public class Product : EntityAuditBase<long>, IStatusTracking
 {
     [Required]
-    [Column("Name")]
-    [MaxLength(150)]
-    public string Name { get; set; }
+    [Column("name", TypeName = "varchar(150)")]
+    public required string Name { get; init; }
 
-    [Column("Code")]
-    [MaxLength(100)]
-    public string? Code { get; set; }
+    [Column("code", TypeName = "varchar(100)")]
+    public string? Code { get; init; }
 
-    [MaxLength(2000)]
-    [Column("Description")]
-    public string? Description { get; set; }
+    [Column("description", TypeName = "varchar(2000)")]
+    public string? Description { get; init; }
 
     [Required]
-    [Column("Prize")]
-    public double Prize { get; set; }
+    [Column("prize")]
+    public double Prize { get; init; }
 
-    [Column("Discount")]
-    public double Discount { get; set; }
-
-    [Required]
-    [Column("Currency")]
-    [MaxLength(100)]
-    public string? Currency { get; set; }
+    [Column("discount")]
+    public double Discount { get; init; }
 
     [Required]
-    [Column("DefaultImage")]
-    public string? DefaultImage { get; set; }
-
-    [Column("OriginLinkDetail")]
-    public string? OriginLinkDetail { get; set; }
-
-    [Column("Url")]
-    public string? Url { get; set; }
+    [Column("currency", TypeName = "varchar(100)")]
+    public string? Currency { get; init; }
 
     [Required]
-    [Column("Stock")]
-    public bool Stock { get; set; }
+    [Column("default_image", TypeName = "varchar(1000)")]
+    public string? DefaultImage { get; init; }
 
-    [Column("IsActive")]
+    [Column("origin_link_detail", TypeName = "varchar(500)")]
+    public string? OriginLinkDetail { get; init; }
+
+    [Column("url", TypeName = "varchar(500)")]
+    public string? Url { get; init; }
+
+    [Required]
+    [Column("stock")]
+    public bool Stock { get; init; }
+
+    [Column("is_active", TypeName = "int4")]
     public int IsActive { get; set; }
 
-    [Column("IsDeleted")]
+    [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 
     [Required]
-    [Column("CategoryId")]
-    public int CategoryId { get; set; }
+    [Column("category_id")]
+    public int CategoryId { get; private set; }
 
     [Required]
-    [Column("BrandId")]
-    public int BrandId { get; set; }
+    [Column("brand_id")]
+    public int BrandId { get; private set; }
 
-    public virtual Category? Categories { get; set; }
+    public virtual Category? Categories { get; init; }
 
-    public virtual Brand? Brands { get; set; }
+    public virtual Brand? Brands { get; init; }
 
-    public virtual ICollection<Property>? Properties { get; set; }
-    public virtual ICollection<ProductImage>? ProductImages { get; set; }
-    public virtual ICollection<OrderItem>? Items { get; set; }
+    public virtual ICollection<ProductProperty>? Properties { get; init; }
+    public virtual ICollection<ProductImage>? ProductImages { get; init; }
+    public virtual ICollection<OrderItem>? Items { get; init; }
 
+    public Product ModifyBrand(int brandId)
+    {
+        this.BrandId = brandId;
+        return this;
+    }
+
+    public Product ModifyCategory(int categoryId)
+    {
+        this.CategoryId = categoryId;
+        return this;
+    }
 }

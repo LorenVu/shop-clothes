@@ -4,10 +4,10 @@ using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
 
-[Table("users")]
-public class User : EntityAuditBase<Guid>, IStatusTracking
+[Table("customers")]
+public class Customer : EntityAuditBase<Guid>, IStatusTracking
 {
-    public User(string userName, string password, string salt)
+    public Customer(string userName, string password, string salt)
     {
         UserName = userName;
         Password = password;
@@ -17,7 +17,7 @@ public class User : EntityAuditBase<Guid>, IStatusTracking
     [Required]
     [Column("username", TypeName = "varchar(50)")]
     public string UserName { get; private set; }
-
+    
     [Required]
     [Column("password", TypeName = "varchar(255)")]
     public string Password { get; private set; }

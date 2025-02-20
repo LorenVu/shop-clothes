@@ -9,15 +9,15 @@ public class ApplicationConfig : EntityAuditBase<int>, IStatusTracking
 {
     [Required]
     [Column("config_key", TypeName = "varchar(100)")]
-    public required string ConfigKey { get; set; }
+    public string ConfigKey { get; set; }
     
     [Required]
     [Column("config_value", TypeName = "text")]
-    public required string ConfigValue { get; set; }
+    public string ConfigValue { get; set; }
     
     [Required]
     [Column("config_value_type", TypeName = "varchar(50)")]
-    public required string ConfigValueType { get; set; }
+    public string ConfigValueType { get; set; }
     
     [Column("reference_id")]
     public int ReferenceId { get; set; }
@@ -28,7 +28,7 @@ public class ApplicationConfig : EntityAuditBase<int>, IStatusTracking
     [Column("description", TypeName = "varchar(255)")]
     public string? Description { get; set; }
     
-    [Column("is_active", TypeName = "byte")]
+    [Column("is_active", TypeName = "int4")]
     public int IsActive { get; set; }
     
     [Column("is_deleted")]

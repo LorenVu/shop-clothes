@@ -4,27 +4,27 @@ using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
 
-[Table("OrderItems")]
+[Table("order_items")]
 public class OrderItem : EntityAuditBase<int>
 {
     [Required]
-    [Column("Quantity")]
+    [Column("quantity")]
     public int Quantity { get; set; }
 
     [Required]
-    [Column("Price")]
+    [Column("price")]
     public double Price { get; set; }
 
     [Required]
-    [Column("OrderId")]
+    [Column("order_id")]
     public long OrderId { get; set; }
 
     [Required]
-    [Column("ProductId")]
+    [Column("product_id")]
     public long ProductId { get; set; }
 
     [Required]
-    [Column("PromotionId")]
+    [Column("promotion_id")]
     public int PromotionId { get; set; }
 
     public virtual Order? Order { get; set; }

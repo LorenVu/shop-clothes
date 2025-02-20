@@ -4,10 +4,15 @@ namespace Clothes.Domain.Common;
 
 public abstract class EntityAuditBase<TKey> : EntityBase<TKey>, IEntityAuditBase<TKey>
 {
-    [Column(TypeName = "character(25)")]
+    [Column("created_user", TypeName = "varchar(25)")]
     public string? CreatedUser { get; set; }
-    [Column(TypeName = "character(25)")]
+    
+    [Column("last_modified_user", TypeName = "varchar(25)")]
     public string? LastModifiedUser { get; set; }
-    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
-    public DateTimeOffset LastModifiredDate { get; set; } = DateTimeOffset.Now;
+    
+    [Column("created_date")]
+    public DateTimeOffset CreatedDate { get; set; }
+    
+    [Column("last_modified_date")]
+    public DateTimeOffset LastModifiedDate { get; set; }
 }

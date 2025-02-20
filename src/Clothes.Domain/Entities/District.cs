@@ -3,29 +3,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
+#nullable disable
 
-[Table("Districts")]
+
+[Table("districts")]
 public class District : EntityAuditBase<int>
 {
     [Required]
-    [Column(TypeName = "varchar(30)")]
-    public string Code { get; set; }
+    [Column("code", TypeName = "varchar(30)")]
+    public string Code { get; init; }
 
     [Required]
-    [Column(TypeName = "varchar(100)")]
-    public string Name { get; set; }
+    [Column("name", TypeName = "varchar(100)")]
+    public string Name { get; init; }
 
     [Required]
-    [Column(TypeName = "varchar(100)")]
-    public string NameEn { get; set; }
+    [Column("name_en", TypeName = "varchar(100)")]
+    public string NameEn { get; init; }
 
     [Required]
-    public int ActiveFLG { get; set; }
+    [Column("active_flg")]
+    public int ActiveFlg { get; init; }
 
     //Relationship
-    public int ProvinceId { get; set; }
-    public Province Province { get; set; } = null!;
+    [Column("province_id")]
+    public int ProvinceId { get; init; }
+    public Province Province { get; init; }
 
-    public ICollection<Ward> Wards { get; set; } = null!;
-    public ICollection<Address> Addresses { get; set; } = null!;
+    public ICollection<Ward> Wards { get; init; }
+    public ICollection<Address> Addresses { get; init; }
 }

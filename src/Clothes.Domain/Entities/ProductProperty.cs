@@ -4,21 +4,24 @@ using Clothes.Domain.Common;
 
 namespace Clothes.Domain.Entities;
 
-[Table("brands")]
-public class Brand : EntityAuditBase<int>, IStatusTracking
+[Table("product_properties")]
+public class ProductProperty : EntityBase<int>, IStatusTracking
 {
     [Required]
     [Column("name", TypeName = "varchar(100)")]
     public string? Name { get; set; }
 
-    [Column("code", TypeName = "varchar(100)")]
-    public string? Code { get; set; }
+    [Required]
+    [Column("value", TypeName = "varchar(150)")]
+    public string? Value { get; set; }
+
+    [Required]
+    [Column("product_id")]
+    public long ProductId { get; set; }
     
     [Column("is_active", TypeName = "int4")]
     public int IsActive { get; set; }
-    
+
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }
-
-    public virtual ICollection<Product>? Products { get; set; }
 }

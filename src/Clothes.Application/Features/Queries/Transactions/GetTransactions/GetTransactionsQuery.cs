@@ -38,5 +38,5 @@ public class TransactionFilterCondition : FilterCondition
 public class GetTransactionsQuery : QueryBase<TransactionFilterCondition, OrderCondition>, IMapFrom<TransactionDto>, IRequest<IEnumerable<TransactionDto>>
 {
     public void Mapping(Profile profile) =>
-        profile.CreateMap<Transaction, TransactionDto>();
+        profile.CreateMap<SepayTransaction, TransactionDto>();
 }
