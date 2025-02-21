@@ -1,15 +1,18 @@
 using Clothes.Domain.Constracts;
 using Clothes.Infrastructure.Persistences;
+using Microsoft.EntityFrameworkCore;
 
 namespace Clothes.Infrastructure.Repositories.UnitOfWork;
 
-public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
+public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
 {
-    public void Dispose()
+    private readonly TContext _context;
+    public UnitOfWork(TContext context)
     {
-        context.Dispose();
+        this._context = context;
     }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
-        context.SaveChangesAsync(cancellationToken);
+    public Task<int> CommitAsync(CancellationToken cancellationToken = default) => _context.SaveChangesAsync(cancellationToken);
+
+    public void Dispose() => _context.Dispose();
 }

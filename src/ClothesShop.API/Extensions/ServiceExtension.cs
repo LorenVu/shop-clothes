@@ -1,64 +1,55 @@
 using System.Net.Mime;
 using System.Text;
+using Clothes.Application;
+using Clothes.Application.Services.Interfaces;
+using Clothes.Application.Services.Transactions;
 using Clothes.Domain.Configs;
 using Clothes.Domain.Extensions;
+using Clothes.Infrastructure;
 using Clothes.Infrastructure.Persistences;
-using Clothes.Infrastructure.Repositories;
-using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
+using ClothesShop.API.Controllers.Configs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ClothesShop.API.Extensions;
 
 public static class ServiceExtension
 {
-    public static IServiceCollection Configuration(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
     {
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(
-            // options =>
-            // {
-            //     // Dynamically add Swagger document groups based on endpoint versions
-            //     options.DocInclusionPredicate((docName, apiDesc) => 
-            //         apiDesc.RelativePath != null 
-            //         && apiDesc.RelativePath.StartsWith(docName, StringComparison.OrdinalIgnoreCase));
-            //
-            //     // Add Swagger document for each version-group
-            //     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-            //     {
-            //         Title = "API v1",
-            //         Version = "v1",
-            //     });
-            //
-            //     options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
-            //     {
-            //         Title = "API v2",
-            //         Version = "v2",
-            //     });
-            // }
-            );
-
-        services.ConfigureHttpClients();
+        var sePayConfig = configuration.GetSection(nameof(SepayConfigs)).Get<SepayConfigs>();
+        ArgumentNullException.ThrowIfNull(sePayConfig);
+        services.AddSingleton(sePayConfig);
         
-        services.AddResponseCaching();
-        services.AddJwtBearerAuthentication(configuration);
-        services.AddAuthorization();
+        var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>(x => x.BindNonPublicProperties = true);
+        ArgumentNullException.ThrowIfNull(jwtSettings);
+        services.AddSingleton(jwtSettings);
 
         return services;
     }
-
-    public static void AddConfigurationSettings(this IServiceCollection services, IConfiguration configuration)
+    
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var sePayConfig = configuration.GetSection(nameof(SepayConfig)).Get<SepayConfig>();
-        if (sePayConfig != null)
-            services.AddSingleton(sePayConfig);
+        services.ApplyTimeoutProfile();
+        services.AddControllers(opt => { opt.ApplyCacheProfile(); });
+        services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        services.ConfigurePostgresDbContext(configuration);
+        //services.AddInfrastructureServices();
+        services.ConfigureInfrastructureServices();
+        services.ConfigureApplicationServices(configuration);
+        services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
+        services.ConfigureHttpClients();
+        services.AddJwtBearerAuthentication(configuration);
+        services.AddResponseCompression(options => { options.EnableForHttps = true; });
+        
+        return services;
     }
 
-    public static void ConfigurePostgresDbContext(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigurePostgresDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnectionString");
 
@@ -73,7 +64,7 @@ public static class ServiceExtension
 
     private static void ConfigureTransactionHttpClient(this IServiceCollection services)
     {
-        services.AddHttpClient<ITransactionRepository, TransactionRepository>("TransactionsApi", (sp, cl) =>
+        services.AddHttpClient<ISepayTransactionService, SepayTransactionService>("TransactionsApi", (sp, cl) =>
         {
             cl.BaseAddress = new Uri("https://my.sepay.vn/userapi");
         });
@@ -85,8 +76,6 @@ public static class ServiceExtension
     private static void AddJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>(x => x.BindNonPublicProperties = true);
-        ArgumentNullException.ThrowIfNull(jwtSettings);
-        
         services.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

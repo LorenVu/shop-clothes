@@ -1,6 +1,6 @@
 namespace Clothes.Domain.Configs;
 
-public class SepayConfig
+public class SepayConfigs
 {
     public string? ApiToken { get; init; }
     public string? BaseUrl { get; init; }

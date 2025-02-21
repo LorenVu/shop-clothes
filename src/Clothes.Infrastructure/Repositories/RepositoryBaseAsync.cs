@@ -1,25 +1,37 @@
 using System.Linq.Expressions;
 using Clothes.Domain.Common;
 using Clothes.Domain.Constracts;
-using Clothes.Infrastructure.Persistences;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clothes.Infrastructure.Repositories;
 
-public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, IUnitOfWork unitOfWork)
-    : IRepositoryBase<TEntity, TK>
+public class RepositoryBaseAsync<TEntity, TK, TContext>
+    : IRepositoryBaseAsync<TEntity, TK, TContext>
     where TEntity : EntityBase<TK>
+    where TContext : DbContext
 {
+    private readonly TContext _dbContext;
+    private readonly IUnitOfWork<TContext> _unitOfWork;
+
+    public RepositoryBaseAsync(TContext context, IUnitOfWork<TContext> unitOfWork)
+    {
+        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        ArgumentNullException.ThrowIfNull(unitOfWork, nameof(unitOfWork));
+        
+        _dbContext = context;
+        _unitOfWork = unitOfWork;
+    }
+
     public IQueryable<TEntity> GetAllAsync(bool trackChanges = false) =>
         trackChanges
-            ? context.Set<TEntity>()
-            : context.Set<TEntity>().AsNoTracking();
+            ? _dbContext.Set<TEntity>()
+            : _dbContext.Set<TEntity>().AsNoTracking();
 
     public IQueryable<TEntity> GetAllAsync(bool trackChanges = false, params Expression<Func<TEntity, TK>>[] includeProperties)
     {
         var entities = trackChanges
-            ? context.Set<TEntity>()
-            : context.Set<TEntity>().AsNoTracking();
+            ? _dbContext.Set<TEntity>()
+            : _dbContext.Set<TEntity>().AsNoTracking();
 
         var aggregate = includeProperties.Aggregate(entities, (current, includeProperty)
             => current.Include(includeProperty));
@@ -47,13 +59,13 @@ public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, 
 
     public async Task<TK> AddAsync(TEntity entity)
     {
-        await context.Set<TEntity>().AddAsync(entity);
+        await _dbContext.Set<TEntity>().AddAsync(entity);
         return entity.Id;
     }
 
     public async Task<List<TK>> AddManyAsync(IEnumerable<TEntity> entities)
     {
-        await context.Set<TEntity>().AddRangeAsync(entities);
+        await _dbContext.Set<TEntity>().AddRangeAsync(entities);
         return entities.Select(x => x.Id).ToList();
     }
 
@@ -69,17 +81,17 @@ public abstract class RepositoryBase<TEntity, TK>(ApplicationDbContext context, 
 
     public Task DeleteAsync(TEntity entity)
     {
-        context.Set<TEntity>().Remove(entity);
+        _dbContext.Set<TEntity>().Remove(entity);
         return Task.CompletedTask;
     }
 
     public Task DeleteManyAsync(IEnumerable<TEntity> entities)
     {
-        context.Set<TEntity>().RemoveRange(entities);
+        _dbContext.Set<TEntity>().RemoveRange(entities);
         return Task.CompletedTask;
     }
 
-    public async Task<int> SaveChangesAsync() =>
-        await unitOfWork.SaveChangesAsync();
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken) =>
+        await _unitOfWork.CommitAsync(cancellationToken);
 
 }

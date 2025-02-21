@@ -1,9 +1,10 @@
 using Clothes.Domain.Constracts;
 using Clothes.Domain.Entities;
+using Clothes.Infrastructure.Persistences;
 
 namespace Clothes.Infrastructure.Repositories.Interfaces;
 
-public interface IUserRepository : IRepositoryBase<User, Guid>
+public interface IUserRepository : IRepositoryBaseAsync<User, Guid, ApplicationDbContext>
 {
     Task<IEnumerable<User>> GetUsersAsync();
     Task<User?> GetUserByIdAsync(Guid id);

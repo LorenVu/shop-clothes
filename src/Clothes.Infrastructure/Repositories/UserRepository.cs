@@ -6,12 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clothes.Infrastructure.Repositories;
 
-public class UserRepository : RepositoryBase<User, Guid>, IUserRepository
+public class UserRepository(ApplicationDbContext context, IUnitOfWork<ApplicationDbContext> unitOfWork)
+    : RepositoryBaseAsync<User, Guid, ApplicationDbContext>(context, unitOfWork), IUserRepository
 {
-    public UserRepository(ApplicationDbContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
-    {
-    }
-
     public async Task<IEnumerable<User>> GetUsersAsync() =>
         await GetAllAsync().ToListAsync();
 

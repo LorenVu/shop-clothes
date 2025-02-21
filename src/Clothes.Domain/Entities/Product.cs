@@ -11,16 +11,23 @@ public class Product : EntityAuditBase<long>, IStatusTracking
     [Required]
     [Column("name", TypeName = "varchar(150)")]
     public required string Name { get; init; }
+    
+    [Required]
+    [Column("no", TypeName = "varchar(150)")]
+    public required string No { get; init; }
 
     [Column("code", TypeName = "varchar(100)")]
     public string? Code { get; init; }
 
     [Column("description", TypeName = "varchar(2000)")]
     public string? Description { get; init; }
+    
+    [Column("summary", TypeName = "varchar(2000)")]
+    public string? Summary { get; init; }
 
     [Required]
-    [Column("prize")]
-    public double Prize { get; init; }
+    [Column("price", TypeName = "decimal(18,2)")]
+    public decimal Price { get; init; }
 
     [Column("discount")]
     public double Discount { get; init; }

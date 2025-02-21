@@ -1,5 +1,8 @@
+using Clothes.Application.Common.Constrants.Requests;
 using Clothes.Application.Common.Constrants.Responses;
+using Clothes.Application.Identity;
 using Clothes.Application.Services.Interfaces;
+using Clothes.Domain.Configs;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
 
@@ -13,16 +16,15 @@ public class AuthenticationService(IJwtFactory jwtFactory, IIdentityService iden
         if(existUser == null)
             return ApiFailedResult<LoginResponse>
                 .Instance
-                .WithMessage("Not found user");
+                .WithMessage(CodeResponseMessage.DataNotFound);
 
         if (!CheckPassword(requestPassword, existUser.Password, existUser.Salt))
             return ApiFailedResult<LoginResponse>
                 .Instance
-                .WithMessage("Password is not match");
+                .WithMessage(CodeResponseMessage.LoginFailedPasswordNotCorrect);
         
         var role = "User";
-        var accessToken = jwtFactory.GenerateAccessToken(existUser.Id, existUser.EmailAddress, existUser.UserName, role);
-        var refreshToken = jwtFactory.GenerateRefreshToken();
+        var (accessToken, refreshToken) = jwtFactory.GetToken(new TokenRequest(existUser.Id, existUser.UserName, role));
 
         return ApiSuccessResult<LoginResponse>.Instance
             .WithMessage()

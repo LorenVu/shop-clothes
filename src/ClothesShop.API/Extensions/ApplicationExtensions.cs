@@ -11,9 +11,15 @@ public static class ApplicationExtensions
         app.UseResponseCompression();
         app.UseCors("AllowAll");
         app.UseRouting();
+        // app.UseHttpsRedirection(); //for production only
         app.UseResponseCaching();
         app.UseRequestTimeouts();
         app.UseAuthentication();
         app.UseAuthorization();
+        
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapDefaultControllerRoute();
+        });
     }
 }   

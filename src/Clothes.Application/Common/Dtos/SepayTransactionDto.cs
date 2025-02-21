@@ -1,6 +1,6 @@
 namespace Clothes.Application.Common.Dtos;
 
-public class TransactionDto
+public class SepayTransactionDto
 {
     public string AccountNumber { get; private set; } = string.Empty;
     public string SubAccount { get; private set; } = string.Empty;

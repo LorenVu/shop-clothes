@@ -1,4 +1,5 @@
 using AutoMapper;
+using Clothes.Domain.Configs;
 using Clothes.Domain.Entities;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
@@ -13,11 +14,11 @@ public class UpdateUserCommandHandler(IUserRepository userRepository, IMapper ma
     {
         var userEntity = await userRepository.FindByIdAsync(request.Id);
 
-        if (userEntity == null) return ApiFailedResult<User>.Instance.WithMessage($"");
+        if (userEntity == null) return ApiFailedResult<User>.Instance.WithMessage(CodeResponseMessage.DataNotFound);
 
         var user = mapper.Map<User>(request);
         await userRepository.UpdateAsync(user);
-        var result = await userRepository.SaveChangesAsync();
+        var result = await userRepository.SaveChangesAsync(cancellationToken);
 
         return ApiSuccessResult<User>
             .Instance

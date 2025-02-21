@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Clothes.Domain.Constracts;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork<TContext> : IDisposable where TContext : DbContext
 {
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<int> CommitAsync(CancellationToken cancellationToken = default);
 }

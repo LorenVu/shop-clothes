@@ -1,6 +1,6 @@
 using Clothes.Application.Common.Constrants.Requests;
-using Clothes.Application.Features.Queries.Authentication.Login;
-using Clothes.Application.Features.Queries.Authentication.Logout;
+using Clothes.Application.Features.Queries.Identities.Login;
+using Clothes.Application.Features.Queries.Identities.Logout;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

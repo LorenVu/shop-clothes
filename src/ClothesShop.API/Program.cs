@@ -1,44 +1,41 @@
-using Clothes.Application;
-using Clothes.Infrastructure;
+using BuildingBlock.Common.Logging;
+using Clothes.Infrastructure.Persistences;
+using Clothes.Infrastructure.Persistences.Seedings;
 using ClothesShop.API.Extensions;
+using Serilog;
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.ConfigurePostgresDbContext(builder.Configuration);
-// Add services to the container.
-    builder.Services.Configuration(builder.Configuration);
-    builder.Services.ConfigureApplicationServices(builder.Configuration);
-    builder.Services.ConfigureInfrastructureServices();
-    builder.Services.AddConfigurationSettings(builder.Configuration);
-    builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-    builder.Services.AddControllers();
-    //builder.Services.AddHealthCheck();
-    builder.Services.AddEndpointsApiExplorer(); 
+    builder.Host.UseSerilog(Serilogger.Configure);
+    Log.Information("Start ClothesShop API up");
+    
+    builder.Host.AddAppConfiguration();
+    builder.Services.AddConfigurationSettings(builder.Configuration)
+        .AddInfrastructure(builder.Configuration);
     
     var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-        
-        //Redirect to swagger
-        app.MapGet("/", () => 
-            Results.Redirect("~/swagger")
-        );
-    }
-    
-    if (app.Environment.IsProduction())
-        app.UseHttpsRedirection();
-    
     app.UseInfrastructure(builder);
-    app.MapControllers();
-    app.Run();
+            
+    app.MigrateDatabase<ApplicationDbContext>((context, _) =>
+        {
+            ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
+            CategoryContextSeed.SeedCategoryAsync(context, Log.Logger).Wait();
+        })
+        .Run();
 }
-catch(Exception e)
+catch(Exception ex)
 {
-    Console.WriteLine(e.Message);
+    //Block error when generate migrations
+    var type = ex.GetType().Name;    
+    if(type.Equals("StopTheHostException", StringComparison.Ordinal))
+        throw;
+            
+    Log.Fatal(ex, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Shut down Product API complete");
+    Log.CloseAndFlush();
 }

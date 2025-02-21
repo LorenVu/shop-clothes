@@ -1,5 +1,6 @@
-using System.Reflection;
 using Clothes.Domain.Constracts;
+using Clothes.Infrastructure.Repositories;
+using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Repositories.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
@@ -11,8 +12,13 @@ public static class ConfigureInfrastructure
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services)
     {
         services
-            .AddScoped<IUnitOfWork, UnitOfWork>()
-            .ConfigureRepositories();
+            .AddScoped(typeof(IRepositoryBaseAsync<,,>), typeof(RepositoryBaseAsync<,,>))
+            .AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>))
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<ITransactionRepository, TransactionRepository>()
+            .AddScoped<IBankRepository, BankRepository>()
+            ;
 
         return services;
     }

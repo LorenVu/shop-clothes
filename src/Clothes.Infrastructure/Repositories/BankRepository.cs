@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clothes.Infrastructure.Repositories;
 
-public class BankRepository(ApplicationDbContext context, IUnitOfWork unitOfWork)
-    : RepositoryBase<Bank, int>(context, unitOfWork), IBankRepository
+public class BankRepository(ApplicationDbContext context, IUnitOfWork<ApplicationDbContext> unitOfWork)
+    : RepositoryBaseAsync<Bank, int, ApplicationDbContext>(context, unitOfWork), IBankRepository
 {
     public async Task<IEnumerable<Bank>> GetBanksAsync()
         => await GetAllAsync().ToListAsync();

@@ -1,31 +1,30 @@
 using System.Text;
 using AutoMapper;
 using Clothes.Application.Common.Dtos;
+using Clothes.Application.Services.Interfaces;
 using Clothes.Domain.Configs;
-using Clothes.Infrastructure.Repositories.Interfaces;
+using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
 
-namespace Clothes.Application.Features.Queries.Transactions.GetTransactions;
+namespace Clothes.Application.Features.Queries.Transactions.GetSepayTransactions;
 
-public class GetTransactionsQueryHandler(ITransactionRepository transactionRepository,
-    SepayConfig sepayConfig, IMapper mapper) : IRequestHandler<GetTransactionsQuery, IEnumerable<TransactionDto>>
+public class GetSepayTransactionsQueryHandler(ISepayTransactionService sepayTransactionService,
+    SepayConfigs sepayConfigs, IMapper mapper) : IRequestHandler<GetSepayTransactionsQuery, ApiSuccessResult<IEnumerable<SepayTransactionDto>>>
 {
-    public async Task<IEnumerable<TransactionDto>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
+    public async Task<ApiSuccessResult<IEnumerable<SepayTransactionDto>>> Handle(GetSepayTransactionsQuery request, CancellationToken cancellationToken)
     {
-        var urlStringBuilder = new StringBuilder($"{sepayConfig.BaseUrl}/{sepayConfig.TransactionEndpoints.BaseEndpoint}/{sepayConfig.TransactionEndpoints.List}");
-
-        // if (request is not null)
-        //     urlStringBuilder.Append(GenerateQueryPath(request));
+        var urlStringBuilder = new StringBuilder($"{sepayConfigs.BaseUrl}/{sepayConfigs.TransactionEndpoints.BaseEndpoint}/{sepayConfigs.TransactionEndpoints.List}");
+        urlStringBuilder.Append(GenerateQueryPath(request));
 
         var url = urlStringBuilder.ToString();
 
-        var transactions = await transactionRepository.GetTransactionsAsync(url, cancellationToken);
-        var result = mapper.Map<IEnumerable<TransactionDto>>(transactions);
+        var transactions = await sepayTransactionService.GetTransactionsAsync(url, cancellationToken);
+        var result = mapper.Map<IEnumerable<SepayTransactionDto>>(transactions);
 
-        return result;
+        return ApiSuccessResult<IEnumerable<SepayTransactionDto>>.Instance.WithData(result).WithMessage();
     }
 
-    private string GenerateQueryPath(GetTransactionsQuery request)
+    private string GenerateQueryPath(GetSepayTransactionsQuery request)
     {
         var stringBuilder = new StringBuilder("?");
 
@@ -36,6 +35,7 @@ public class GetTransactionsQueryHandler(ITransactionRepository transactionRepos
         }
 
         var filter = request.Filter;
+        if (filter == null) return stringBuilder.ToString().TrimStart('&');
 
         if (!string.IsNullOrWhiteSpace(filter.AccountNumber))
             stringBuilder.Append($"&account_number={filter.AccountNumber}");

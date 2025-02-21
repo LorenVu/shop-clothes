@@ -18,6 +18,8 @@ public sealed class ResponseMessageConfig
 public enum CodeResponseMessage
 {
     Successed = 0000,
+    Failed = 0001,
+    
     DataInValid = 3001,
     // WorkstationHasBeenAuthenticated = 3002,
     NotSystemAccessPermission = 3003,

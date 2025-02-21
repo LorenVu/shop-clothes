@@ -3,7 +3,7 @@ using Clothes.Application.Services.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
 
-namespace Clothes.Application.Features.Queries.Authentication.Login;
+namespace Clothes.Application.Features.Queries.Identities.Login;
 
 public class UserLoginQueryHandler(IAuthenticationService authenticationService) : IRequestHandler<UserLoginQuery, ApiResult<LoginResponse>>
 {

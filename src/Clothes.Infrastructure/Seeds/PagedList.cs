@@ -4,7 +4,6 @@ namespace Clothes.Infrastructure.Seeds;
 
 public class PagedList<T> : List<T>
 {
-
     public PagedList(IEnumerable<T> items, long totalItems, int pageIndex, int pageSize)
     {
         _metadata = new Metadata
