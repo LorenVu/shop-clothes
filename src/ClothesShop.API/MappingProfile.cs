@@ -1,6 +1,6 @@
 using AutoMapper;
+using Clothes.Application.Common.Dtos;
 using Clothes.Domain.Entities;
-using ClothesShop.API.Controllers.Dtos;
 
 namespace ClothesShop.API;
 

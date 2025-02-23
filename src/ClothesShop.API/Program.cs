@@ -20,8 +20,9 @@ try
             
     app.MigrateDatabase<ApplicationDbContext>((context, _) =>
         {
-            ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
+            BrandContextSeed.SeedBrandAsync(context, Log.Logger).Wait();
             CategoryContextSeed.SeedCategoryAsync(context, Log.Logger).Wait();
+            ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
         })
         .Run();
 }
@@ -32,7 +33,7 @@ catch(Exception ex)
     if(type.Equals("StopTheHostException", StringComparison.Ordinal))
         throw;
             
-    Log.Fatal(ex, "Unhandled exception");
+    Log.Error(ex, "Unhandled exception");
 }
 finally
 {

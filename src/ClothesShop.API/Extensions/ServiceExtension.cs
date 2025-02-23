@@ -1,5 +1,7 @@
 using System.Net.Mime;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Clothes.Application;
 using Clothes.Application.Services.Interfaces;
 using Clothes.Application.Services.Transactions;
@@ -27,13 +29,25 @@ public static class ServiceExtension
         ArgumentNullException.ThrowIfNull(jwtSettings);
         services.AddSingleton(jwtSettings);
 
+        configuration.GetSection(nameof(ResponseMessageConfig)).Get<ResponseMessageConfig>(x => x.BindNonPublicProperties = true);
+
         return services;
     }
     
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.ApplyTimeoutProfile();
-        services.AddControllers(opt => { opt.ApplyCacheProfile(); });
+        services.AddControllers(opt =>
+            {
+                opt.ApplyCacheProfile(); 
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.Converters.Add(new MyDateTimeConverter());
+                options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.Strict;
+            });
         services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -64,8 +78,7 @@ public static class ServiceExtension
 
     private static void ConfigureTransactionHttpClient(this IServiceCollection services)
     {
-        services.AddHttpClient<ISepayTransactionService, SepayTransactionService>("TransactionsApi", (sp, cl) =>
-        {
+        services.AddHttpClient<ISepayTransactionService, SepayTransactionService>("TransactionsApi", (sp, cl) => {
             cl.BaseAddress = new Uri("https://my.sepay.vn/userapi");
         });
 
@@ -88,7 +101,7 @@ public static class ServiceExtension
             {
                 ValidateIssuer = true, // default True
                 ValidIssuer = jwtSettings.Issuer ?? string.Empty,
-                ValidateIssuerSigningKey = true,
+                ValidateIssuerSigningKey = true,    
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey ?? string.Empty)),
                 ValidAudience = jwtSettings.Audience,
                 ValidateAudience = true, // default True
@@ -97,7 +110,7 @@ public static class ServiceExtension
             };
             x.Events = new JwtBearerEvents
             {
-                OnAuthenticationFailed = context =>
+                OnAuthenticationFailed = context => 
                 {
                     context.Response.OnStarting(async () =>
                     {

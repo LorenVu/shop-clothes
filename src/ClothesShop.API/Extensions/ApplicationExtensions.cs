@@ -1,3 +1,5 @@
+using ClothesShop.API.Middlewares;
+
 namespace ClothesShop.API.Extensions;
 
 public static class ApplicationExtensions
@@ -9,16 +11,23 @@ public static class ApplicationExtensions
             $"{builder.Environment.ApplicationName} v1"));
 
         app.UseResponseCompression();
-        app.UseCors("AllowAll");
+        app.UseCors(x => x
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetIsOriginAllowed(origin => true)
+            .AllowCredentials());
         app.UseRouting();
         // app.UseHttpsRedirection(); //for production only
         app.UseResponseCaching();
         app.UseRequestTimeouts();
+        app.UseMiddleware<CustomErrorHandlerMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
         
         app.UseEndpoints(endpoints =>
         {
+            endpoints.Map("/", context => Task.Run(() =>
+                context.Response.Redirect("/swagger/index.html")));
             endpoints.MapDefaultControllerRoute();
         });
     }

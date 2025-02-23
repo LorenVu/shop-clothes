@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Clothes.Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ClothesShop.Domain\ClothesShop.Domain.csproj" />
+      <ProjectReference Include="..\ClothesShop.Infrastructure\ClothesShop.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.16.3" />
+      <PackageReference Include="FluentValidation" Version="11.11.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+      <PackageReference Include="MediatR" Version="12.4.1" />
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.5.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Validators\" />
+      <Folder Include="Features\Queries\Products\" />
+    </ItemGroup>
+
+</Project>

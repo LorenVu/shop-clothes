@@ -18,11 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "intergrations", "intergrati
 		src\docker-compose.yml = src\docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clothes.Infrastructure", "src\Clothes.Infrastructure\Clothes.Infrastructure.csproj", "{DF62BC3C-AC19-4CD4-A6B9-60F2C6814E89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothesShop.Infrastructure", "src\ClothesShop.Infrastructure\ClothesShop.Infrastructure.csproj", "{DF62BC3C-AC19-4CD4-A6B9-60F2C6814E89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clothes.Domain", "src\Clothes.Domain\Clothes.Domain.csproj", "{09CE62FA-EC21-44EA-A461-3FF6B448D88C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothesShop.Domain", "src\ClothesShop.Domain\ClothesShop.Domain.csproj", "{09CE62FA-EC21-44EA-A461-3FF6B448D88C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clothes.Application", "src\Clothes.Application\Clothes.Application.csproj", "{A998AD4A-AFDF-4563-872A-C704CDB8685C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothesShop.Application", "src\ClothesShop.Application\ClothesShop.Application.csproj", "{A998AD4A-AFDF-4563-872A-C704CDB8685C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlock", "BuildingBlock\BuildingBlock.csproj", "{FEF1809B-A4E8-4870-AF32-958550F3C94D}"
 EndProject

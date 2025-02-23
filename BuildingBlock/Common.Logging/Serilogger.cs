@@ -17,7 +17,7 @@ public class Serilogger
                     "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}-{Message:lj}{NewLine}{Exception}{NewLine}")
                 .Enrich.FromLogContext()
                 //.Enrich.WithMachineName()
-                .Enrich.WithProperty("Enviroment", environmentName)
+                .Enrich.WithProperty("Environment", environmentName)
                 .Enrich.WithProperty("Application", applicationName)
                 .ReadFrom.Configuration(context.Configuration);
         };

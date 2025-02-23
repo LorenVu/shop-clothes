@@ -28,7 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\BuildingBlock\BuildingBlock.csproj" />
-      <ProjectReference Include="..\Clothes.Application\Clothes.Application.csproj" />
+      <ProjectReference Include="..\ClothesShop.Application\ClothesShop.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
