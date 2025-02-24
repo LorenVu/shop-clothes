@@ -2,10 +2,11 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application;
 using Clothes.Application.Services.Interfaces;
 using Clothes.Application.Services.Transactions;
-using Clothes.Domain.Configs;
 using Clothes.Domain.Extensions;
 using Clothes.Infrastructure;
 using Clothes.Infrastructure.Persistences;
@@ -29,8 +30,8 @@ public static class ServiceExtension
         ArgumentNullException.ThrowIfNull(jwtSettings);
         services.AddSingleton(jwtSettings);
 
-        configuration.GetSection(nameof(ResponseMessageConfig)).Get<ResponseMessageConfig>(x => x.BindNonPublicProperties = true);
-
+        configuration.GetSection(nameof(ResponseMessageConfigs)).Get<ResponseMessageConfigs>(x => x.BindNonPublicProperties = true);
+        configuration.GetSection(nameof(SerilogConfigs)).Get<SerilogConfigs>(x => x.BindNonPublicProperties = true);
         return services;
     }
     
@@ -68,7 +69,18 @@ public static class ServiceExtension
         var connectionString = configuration.GetConnectionString("DefaultConnectionString");
 
         services.AddDbContextPool<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(connectionString, ops =>
+            {
+                ops.EnableRetryOnFailure();
+
+                if (!SystemGlobalConfigs.IsDebug) return;
+                
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
+            }).UseSnakeCaseNamingConvention());
+        
+        // Force convert dateTime with kind in PostgreSQL
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     private static void ConfigureHttpClients(this IServiceCollection services)

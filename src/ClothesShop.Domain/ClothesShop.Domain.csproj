@@ -12,7 +12,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Exceptions\" />
+      <Folder Include="Common\" />
+      <Folder Include="Constracts\" />
+      <Folder Include="Enums\" />
+      <Folder Include="Extensions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BuildingBlock\Common.Logging\Common.Logging.csproj" />
+      <ProjectReference Include="..\BuildingBlock\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

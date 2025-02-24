@@ -1,4 +1,4 @@
-using Clothes.Domain.Constracts;
+using BuildingBlock.Shared.Contracts.Domains.Interfaces;
 using Clothes.Domain.Entities;
 using Clothes.Infrastructure.Persistences;
 using Clothes.Infrastructure.Repositories.Interfaces;

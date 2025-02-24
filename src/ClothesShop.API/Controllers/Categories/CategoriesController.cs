@@ -1,3 +1,4 @@
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Features.Queries.Categories.GetCategoriesPagination;
 using Clothes.Application.Features.Queries.Categories.GetCategoryById;
 using Clothes.Application.Features.Queries.Categories.GetHierarchyCategories;

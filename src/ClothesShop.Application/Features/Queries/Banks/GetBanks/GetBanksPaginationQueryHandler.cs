@@ -1,6 +1,6 @@
+using BuildingBlock.Shared.Seeds;
 using Clothes.Domain.Entities;
 using Clothes.Infrastructure.Repositories.Interfaces;
-using Clothes.Infrastructure.Seeds;
 using MediatR;
 
 namespace Clothes.Application.Features.Queries.Banks.GetBanks;

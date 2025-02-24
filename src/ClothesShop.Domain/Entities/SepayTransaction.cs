@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Clothes.Domain.Common;
+using BuildingBlock.Shared.Contracts.Domains;
 
 namespace Clothes.Domain.Entities;
 #nullable disable

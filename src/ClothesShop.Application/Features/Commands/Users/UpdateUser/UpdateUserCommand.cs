@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Dtos;
 using Clothes.Application.Common.Mappings;
 using Clothes.Application.Features.Common.Users;

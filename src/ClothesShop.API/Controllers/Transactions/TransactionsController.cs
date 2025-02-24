@@ -1,5 +1,5 @@
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Features.Queries.Transactions.GetSepayTransactions;
-using Clothes.Infrastructure.Seeds;
 using Clothes.Infrastructure.Shared.Responses;
 using ClothesShop.API.Controllers.Configs;
 using FluentValidation;

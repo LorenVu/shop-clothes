@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.DTOs.Identity;
 using Clothes.Application.Common.Constrants.Requests;
-using Clothes.Application.Common.Constrants.Responses;
-using Clothes.Domain.Configs;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -25,23 +25,20 @@ public class JwtFactory(IOptions<JwtSettings> jwtSettings) : IJwtFactory
         var result =   new TokenResponse(token, GenerateRefreshToken());
         return result;
     }
-    
-    public string GenerateRefreshToken() =>
+
+    private string GenerateRefreshToken() =>
         Convert.ToBase64String(Guid.NewGuid().ToByteArray());
     
     private string GenerateJwt(List<Claim> claims) => GenerateEncryptedtoken(GetSigningCredentials(), claims);
     
     private string GenerateEncryptedtoken(SigningCredentials signingCredentials, List<Claim> claims)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
         var token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpiration),
-            signingCredentials: creds
+            signingCredentials: signingCredentials
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -49,7 +46,8 @@ public class JwtFactory(IOptions<JwtSettings> jwtSettings) : IJwtFactory
 
     private SigningCredentials GetSigningCredentials()
     {
-        byte[] secret = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
+        if (_jwtSettings.SecretKey == null) return default;
+        var secret = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
         var length = secret.Length;
         return new SigningCredentials(new SymmetricSecurityKey(secret), 
             SecurityAlgorithms.HmacSha256);

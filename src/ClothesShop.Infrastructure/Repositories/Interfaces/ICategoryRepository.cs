@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using Clothes.Domain.Constracts;
+using BuildingBlock.Shared.Contracts.Domains.Interfaces;
 using Clothes.Domain.Entities;
 using Clothes.Infrastructure.Persistences;
 

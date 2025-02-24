@@ -1,11 +1,10 @@
-using System.Runtime.InteropServices.ComTypes;
-using Clothes.Application.Common.Dtos;
+using BuildingBlock.Shared.Seeds;
+using Clothes.Application.Features.Commands.Users.ActiveUser;
 using Clothes.Application.Features.Commands.Users.CreateUser;
 using Clothes.Application.Features.Commands.Users.DeleteUser;
 using Clothes.Application.Features.Commands.Users.UpdateUser;
 using Clothes.Application.Features.Queries.Users.GetCustomers;
 using Clothes.Application.Features.Queries.Users.GetUserById;
-using Clothes.Infrastructure.Seeds;
 using Clothes.Infrastructure.Shared.Responses;
 using ClothesShop.API.Controllers.Configs;
 using MediatR;
@@ -22,7 +21,7 @@ public class UsersController(IMediator mediator) : BaseController
     [RequestTimeout(CustomTimeoutProfileConfigs.Over15S)]
     [ResponseCache(CacheProfileName = CustomCacheProfile.NoCache)]
     [ProducesResponseType(typeof(ApiResult<>), 200)]
-    [SwaggerOperation(summary: "Create user")]    
+    [SwaggerOperation(summary: "Get user pagination")]    
     public async Task<IActionResult> GetUsersPagination([FromBody] GetUsersPaginationQuery query)
     {
         var result = await mediator.Send(query);
@@ -34,7 +33,7 @@ public class UsersController(IMediator mediator) : BaseController
     [RequestTimeout(CustomTimeoutProfileConfigs.Over15S)]
     [ResponseCache(CacheProfileName = CustomCacheProfile.NoCache)]
     [ProducesResponseType(typeof(ApiResult<>), 200)]
-    [SwaggerOperation(summary: "Create user")]    
+    [SwaggerOperation(summary: "Get by Id")]    
     public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationtoken)
     {
         var query = new GetUserByIdQuery(id);
@@ -74,6 +73,19 @@ public class UsersController(IMediator mediator) : BaseController
     public async Task<IActionResult> DeleteUser(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteUserCommand(id);
+        await mediator.Send(command, cancellationToken);
+        
+        return NoContent();
+    }
+    
+    [HttpPatch("{id:guid}")]
+    [RequestTimeout(CustomTimeoutProfileConfigs.Over15S)]
+    [ResponseCache(CacheProfileName = CustomCacheProfile.NoCache)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
+    [SwaggerOperation(summary: "Change delete user")]
+    public async Task<IActionResult> ActiveUser(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new ActiveUserCommand(id);
         await mediator.Send(command, cancellationToken);
         
         return NoContent();

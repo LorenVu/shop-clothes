@@ -1,7 +1,9 @@
 using AutoMapper;
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.Contracts.Identity;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Dtos;
 using Clothes.Application.Services.Interfaces;
-using Clothes.Domain.Configs;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
 using MediatR;

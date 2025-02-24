@@ -1,5 +1,5 @@
+using BuildingBlock.Shared.DTOs.Identity;
 using Clothes.Application.Common.Constrants.Requests;
-using Clothes.Application.Common.Constrants.Responses;
 
 namespace Clothes.Application.Identity;
 

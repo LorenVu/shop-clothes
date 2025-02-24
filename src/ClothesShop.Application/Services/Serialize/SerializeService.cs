@@ -23,13 +23,9 @@ public class SerializeService
         });
     }
 
-    public string Serialize<T>(T obj, Type type)
-    {
-        return JsonConvert.SerializeObject(obj, type, new JsonSerializerSettings());
-    }
-
-    public T Deserialize<T>(string text)
-    {
-        return JsonConvert.DeserializeObject<T>(text, new JsonSerializerSettings());
-    }
+    public string Serialize<T>(T obj, Type type) =>
+        JsonConvert.SerializeObject(obj, type, new JsonSerializerSettings());
+    
+    public T? Deserialize<T>(string text) =>
+        JsonConvert.DeserializeObject<T>(text, new JsonSerializerSettings());
 }

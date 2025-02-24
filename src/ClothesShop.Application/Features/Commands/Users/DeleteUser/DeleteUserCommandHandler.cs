@@ -1,4 +1,5 @@
-using Clothes.Domain.Configs;
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
 using MediatR;

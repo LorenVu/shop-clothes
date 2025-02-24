@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
-using Clothes.Domain.Common;
-using Clothes.Domain.Constracts;
+using BuildingBlock.Shared.Contracts.Domains;
+using BuildingBlock.Shared.Contracts.Domains.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clothes.Infrastructure.Repositories;

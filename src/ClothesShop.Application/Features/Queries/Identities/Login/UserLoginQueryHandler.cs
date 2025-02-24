@@ -1,6 +1,6 @@
-using Clothes.Application.Common.Constrants.Responses;
-using Clothes.Application.Services.Interfaces;
-using Clothes.Infrastructure.Shared.Responses;
+using BuildingBlock.Shared.Contracts.Identity;
+using BuildingBlock.Shared.DTOs.Identity;
+using BuildingBlock.Shared.Seeds;
 using MediatR;
 
 namespace Clothes.Application.Features.Queries.Identities.Login;

@@ -1,8 +1,8 @@
-using Clothes.Application.Services.Interfaces;
-using Clothes.Domain.Configs;
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.Contracts.Identity;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Domain.Entities;
 using Clothes.Infrastructure.Repositories.Interfaces;
-using Clothes.Infrastructure.Shared.Responses;
 using FluentValidation;
 using MediatR;
 

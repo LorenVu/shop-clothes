@@ -1,10 +1,10 @@
 using AutoMapper;
+using BuildingBlock.Shared.Enums.Common;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Dtos;
 using Clothes.Domain.Entities;
-using Clothes.Domain.Enums;
 using Clothes.Domain.Extensions;
 using Clothes.Infrastructure.Repositories.Interfaces;
-using Clothes.Infrastructure.Seeds;
 using Clothes.Infrastructure.Shared.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Http;

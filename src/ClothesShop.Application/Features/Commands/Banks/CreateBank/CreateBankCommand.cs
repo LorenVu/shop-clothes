@@ -1,3 +1,4 @@
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Mappings;
 using Clothes.Application.Features.Common.Banks;
 using Clothes.Infrastructure.Shared.Responses;

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
-using Clothes.Application.Services.Interfaces;
+using BuildingBlock.Shared.Contracts.Identity;
 
 namespace Clothes.Application.Services.Authentication;
 

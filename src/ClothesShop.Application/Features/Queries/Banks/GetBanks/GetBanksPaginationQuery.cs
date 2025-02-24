@@ -1,5 +1,5 @@
+using BuildingBlock.Shared.Seeds;
 using Clothes.Domain.Entities;
-using Clothes.Infrastructure.Seeds;
 using Clothes.Infrastructure.Shared.Requests;
 using MediatR;
 

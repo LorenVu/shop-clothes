@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using BuildingBlock.Shared.Enums.Product;
 using Clothes.Domain.Entities;
-using Clothes.Domain.Enums;
 using Clothes.Domain.Extensions;
 using ILogger = Serilog.ILogger;
 

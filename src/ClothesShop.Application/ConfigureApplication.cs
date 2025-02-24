@@ -1,4 +1,5 @@
 using System.Reflection;
+using BuildingBlock.Shared.Contracts.Identity;
 using Clothes.Application.Common.Behaviors;
 using Clothes.Application.Identity;
 using Clothes.Application.Services.Authentication;

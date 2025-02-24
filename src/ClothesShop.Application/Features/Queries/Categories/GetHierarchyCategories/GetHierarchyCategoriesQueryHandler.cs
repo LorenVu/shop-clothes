@@ -1,4 +1,5 @@
 using AutoMapper;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Dtos;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;

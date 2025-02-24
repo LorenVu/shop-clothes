@@ -1,7 +1,7 @@
-using BuildingBlock.Common.Logging;
 using Clothes.Infrastructure.Persistences;
 using Clothes.Infrastructure.Persistences.Seedings;
 using ClothesShop.API.Extensions;
+using Common.Logging;
 using Serilog;
 
 try

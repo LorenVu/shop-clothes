@@ -1,8 +1,10 @@
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.Contracts.Identity;
+using BuildingBlock.Shared.DTOs.Identity;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Constrants.Requests;
-using Clothes.Application.Common.Constrants.Responses;
 using Clothes.Application.Identity;
 using Clothes.Application.Services.Interfaces;
-using Clothes.Domain.Configs;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Shared.Responses;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Clothes.Domain.Common;
+using BuildingBlock.Shared.Contracts.Domains;
 
 namespace Clothes.Domain.Entities;
 

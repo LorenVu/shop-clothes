@@ -1,4 +1,4 @@
-namespace Clothes.Application.Common.Exceptions;
+namespace Shared.Exceptions;
 
 public sealed class BadRequestException : Exception
 {

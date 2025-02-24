@@ -1,4 +1,4 @@
-using Clothes.Domain.Constracts;
+using BuildingBlock.Shared.Contracts.Domains.Interfaces;
 using Clothes.Infrastructure.Repositories;
 using Clothes.Infrastructure.Repositories.Interfaces;
 using Clothes.Infrastructure.Repositories.UnitOfWork;

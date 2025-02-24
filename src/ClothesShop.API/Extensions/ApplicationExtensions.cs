@@ -1,4 +1,4 @@
-using ClothesShop.API.Middlewares;
+using Shared.Middlewares;
 
 namespace ClothesShop.API.Extensions;
 

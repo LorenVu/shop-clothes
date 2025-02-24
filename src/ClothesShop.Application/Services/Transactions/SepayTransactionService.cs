@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
+using BuildingBlock.Shared.Configs;
 using Clothes.Application.Services.Interfaces;
-using Clothes.Domain.Configs;
 using Clothes.Domain.Entities;
 using Clothes.Infrastructure.Shared.Responses.ExternalApiResponse.Sepay;
 

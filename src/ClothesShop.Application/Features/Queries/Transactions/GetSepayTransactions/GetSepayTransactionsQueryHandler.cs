@@ -1,9 +1,9 @@
 using System.Text;
 using AutoMapper;
+using BuildingBlock.Shared.Configs;
+using BuildingBlock.Shared.Seeds;
 using Clothes.Application.Common.Dtos;
 using Clothes.Application.Services.Interfaces;
-using Clothes.Domain.Configs;
-using Clothes.Infrastructure.Seeds;
 using Clothes.Infrastructure.Shared.Responses;
 using FluentValidation;
 using MediatR;
