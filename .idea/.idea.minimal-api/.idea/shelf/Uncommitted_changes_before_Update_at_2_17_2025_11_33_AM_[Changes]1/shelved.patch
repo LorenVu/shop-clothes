@@ -1,0 +1,1724 @@
+Index: Common.Logging/Common.Logging.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Common.Logging/Common.Logging.csproj b/Common.Logging/Common.Logging.csproj
+new file mode 100644
+--- /dev/null	(date 1739525589891)
++++ b/Common.Logging/Common.Logging.csproj	(date 1739525589891)
+@@ -0,0 +1,13 @@
++<Project Sdk="Microsoft.NET.Sdk">
++
++    <PropertyGroup>
++        <TargetFramework>net8.0</TargetFramework>
++        <ImplicitUsings>enable</ImplicitUsings>
++        <Nullable>enable</Nullable>
++    </PropertyGroup>
++
++    <ItemGroup>
++      <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
++    </ItemGroup>
++
++</Project>
+Index: src/MinimalApi.WebApi/Controllers/BaseController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.WebApi/Controllers/BaseController.cs b/src/MinimalApi.WebApi/Controllers/BaseController.cs
+new file mode 100644
+--- /dev/null	(date 1736146591180)
++++ b/src/MinimalApi.WebApi/Controllers/BaseController.cs	(date 1736146591180)
+@@ -0,0 +1,13 @@
++using Microsoft.AspNetCore.Mvc;
++
++namespace MinimalProject.Controllers;
++
++[ApiController]
++public abstract class BaseController : ControllerBase
++{
++    protected virtual IActionResult GetBaseResponse<T>(int httpCode, T? data)
++    {
++        HttpContext.RequestAborted.ThrowIfCancellationRequested();
++        return StatusCode(httpCode, data);
++    }
++}
+\ No newline at end of file
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+new file mode 100644
+--- /dev/null	(date 1735111304418)
++++ b/README.md	(date 1735111304418)
+@@ -0,0 +1,269 @@
++# E-Gate Keeper
++
++## Mô tả
++Dự án này là một ví dụ về việc triển khai kiến trúc Clean Architecture sử dụng .NET Core. Clean Architecture giúp duy trì tính nhất quán, dễ bảo trì và kiểm thử ứng dụng bằng cách tách biệt các lớp ứng dụng theo chức năng.
++
++## Cấu trúc dự án
++Dự án được tổ chức theo các lớp chính như sau:
++
++[![Clean Architecture Diagram](./images/Clean-Architecture-Diagram-Asp-Net.webp)](image_url)
++### 1. Domain Layer
++- Logic nghiệp vụ quan trọng phải nằm trong Domain.
++- Sử dụng Entity và Value Object cho các đối tượng thuộc về Domain.
++- Không để Domain phụ thuộc vào các tầng khác.
++  
++**Thư mục:** 
++```
++/Domain  
++├── /Entities (Các thực thể của domain)
++├── /ValueObjects (Các đối tượng giá trị)
++├── /Events (Các sự kiện của domain)
++├── /Enums (Các liệt kê của domain)
++├── /Constants (Các hằng số của domain)
++├── /Common (Các thành phần chung của domain)
++└── /Exceptions (Các ngoại lệ đặc biệt của domain)
++```
++
++### 2. Application Layer
++- Chứa logic điều phối, gọi tới các dịch vụ và repositories.
++- Sử dụng Command và Query để phân tách các thao tác.
++- Sử dụng DTO để chuyển đổi dữ liệu giữa các tầng.
++  
++**Thư mục:**
++```
++/Application  
++├── /Common (Chứa các thành phần chung)
++│   ├── /Behaviors (Các pipeline behaviors được áp dụng trong quá trình xử lý commands và queries, ví dụ như validation, logging, hoặc transaction management)
++│   │   ├── LoggingBehavior.cs
++│   │   ├── ValidationBehavior.cs
++│   │   ├── TransactionBehavior.cs  (Quản lý giao dịch với Unit of Work)
++│   ├── /Interfaces (Các giao diện được sử dụng trong tầng Application để trừu tượng hóa các dịch vụ. Các giao diện này giúp việc mock và test dễ dàng hơn)
++│   │   ├── IUnitOfWork.cs
++│   │   ├── IGenericRepository.cs
++│   ├── /Mappings (Các cấu hình ánh xạ dữ liệu giữa các đối tượng (ví dụ: giữa Entity và DTO). Thường sử dụng với các thư viện như AutoMapper)
++│   │   └── AutoMapperProfile.cs
++│   ├── /Models (Các mô hình dữ liệu được sử dụng trong tầng Application. Các mô hình này có thể đại diện cho các đối tượng domain hoặc các đối tượng nội bộ)
++│   ├── /Security (Các thành phần liên quan đến bảo mật trong ứng dụng, chẳng hạn như mã hóa, xác thực, hoặc quản lý quyền)
++│   └── /Exceptions (Các ngoại lệ được định nghĩa riêng cho ứng dụng, giúp việc quản lý lỗi trở nên rõ ràng và có tổ chức)
++├── /Features (Tổ chức mã nguồn theo từng tính năng cụ thể của ứng dụng. Mỗi tính năng sẽ có một thư mục riêng)
++│   ├── /{FeatureName}
++│   │   ├── /Commands (Các command và command handlers, được sử dụng để thực hiện các hành động cụ thể liên quan đến tính năng, như thêm, cập nhật, hoặc xóa dữ liệu)
++│   │   │   ├── Create{FeatureName}Command.cs
++│   │   │   ├── Create{FeatureName}CommandHandler.cs
++│   │   │   └── Delete{FeatureName}Command.cs
++│   │   ├── /Queries (Các query và query handlers, được sử dụng để lấy dữ liệu mà không làm thay đổi trạng thái của ứng dụng)
++│   │   │   ├── Get{FeatureName}ByIdQuery.cs
++│   │   │   ├── Get{FeatureName}ByIdQueryHandler.cs
++│   │   └── /Events (Các sự kiện (event) liên quan đến tính năng. Các sự kiện này có thể được kích hoạt bởi các hành động cụ thể trong ứng dụng)
++│   │       ├── {FeatureName}CreatedEvent.cs
++│   │       └── {FeatureName}UpdatedEvent.cs
++├── /Service (Chứa các dịch vụ dùng để thực hiện các nghiệp vụ không thuộc về một tính năng cụ thể)
++│   ├── /{ServiceName}
++└── /Dtos (Chứa các Data Transfer Objects (DTOs), được sử dụng để truyền tải dữ liệu giữa các tầng của ứng dụng)
++    ├── {FeatureName}Dto.cs
++```
++
++### 3. Infrastructure Layer
++- Chứa các chi tiết về cơ sở dữ liệu, tích hợp với các dịch vụ bên ngoài.
++- Sử dụng Repository Pattern để quản lý dữ liệu.
++- Đăng ký các dịch vụ vào DI container.
++   
++**Thư mục:**
++```
++/Infrastructure
++├── /Data
++│   ├── /Contexts (Quản lý các kết nối với CSDL)
++│   │   ├── ApplicationDbContext.cs (Quản lý kết nối và truy vấn với cơ sở dữ liệu cho các thực thể trong ứng dụng)
++│   │   └── IdentityDbContext.cs (Dành riêng cho việc quản lý dữ liệu Identity (người dùng, vai trò), giúp tích hợp dễ dàng với ASP.NET Core Identity)
++│   ├── /Configurations (Chứa các cấu hình cho các thực thể)
++│   │   ├── EntityConfiguration.cs (Các cấu hình cho thực thể, sử dụng Fluent API để định nghĩa cách các thực thể được ánh xạ tới cơ sở dữ liệu)
++│   │   └── IdentityConfiguration.cs (Các cấu hình dành riêng cho các thực thể liên quan đến Identity, như cấu hình bảng Users, Roles)
++│   ├── /Repositories
++│   │   ├── GenericRepository.cs (Triển khai repository chung cho các thao tác CRUD với cơ sở dữ liệu. Cung cấp các phương thức cơ bản như Add, Update, Delete, GetAll, GetById cho các thực thể)
++│   │   ├── UserRepository.cs (Repository cụ thể dành cho thực thể User, chứa các phương thức đặc biệt liên quan đến người dùng, chẳng hạn như tìm kiếm người dùng theo email)
++│   ├── /UnitOfWork
++│   │   ├── UnitOfWork.cs (Quản lý các repository và phiên giao dịch (transaction) với cơ sở dữ liệu)
++│   └── /Migrations
++├── /Identity
++│   ├── /Services
++│   │   ├── IdentityService.cs (Dịch vụ quản lý các nghiệp vụ liên quan đến người dùng và vai trò, như tạo mới người dùng, xác thực, hoặc quản lý quyền hạn)
++│   ├── /Models
++│   │   ├── ApplicationUser.cs (Lớp mô hình đại diện cho người dùng trong hệ thống, kế thừa từ lớp IdentityUser của ASP.NET Core Identity)
++│   │   └── IdentityRole.cs (Lớp mô hình đại diện cho vai trò trong hệ thống, kế thừa từ lớp IdentityRole của ASP.NET Core Identity)
++│   ├── /Claims
++│   │   ├── ClaimsPrincipalExtensions.cs (Chứa các phương thức mở rộng để truy cập dễ dàng hơn vào các claims của người dùng, như lấy user ID hoặc roles từ ClaimsPrincipal)
++│   └── /Jwt
++│       ├── JwtTokenGenerator.cs (Lớp chịu trách nhiệm tạo và quản lý JWT (JSON Web Tokens) cho việc xác thực người dùng)
++│       └── JwtSettings.cs (Chứa các cấu hình liên quan đến JWT, như secret key, thời hạn token)
++├── /Security
++│   ├── /Encryption
++│   │   ├── EncryptionService.cs (Dịch vụ quản lý các thao tác mã hóa và giải mã dữ liệu, giúp bảo vệ thông tin nhạy cảm trong ứng dụng)
++│   │   └── EncryptionSettings.cs (Chứa các cấu hình liên quan đến mã hóa, như các khóa mã hóa và thuật toán sử dụng)
++│   ├── /Authorization
++│   │   ├── Policies.cs (Định nghĩa các chính sách phân quyền trong ứng dụng, như yêu cầu quyền admin để truy cập một tính năng cụ thể)
++│   │   └── AuthorizationService.cs (Dịch vụ quản lý việc phân quyền và kiểm tra quyền hạn của người dùng, sử dụng các chính sách đã định nghĩa)
++├── /Services
++│   ├── /EmailService.cs (Dịch vụ gửi email, quản lý việc gửi email từ ứng dụng, ví dụ như email xác nhận, thông báo, hoặc khôi phục mật khẩu)
++│   ├── /PushNotificationService.cs (Dịch vụ gửi thông báo đẩy (push notifications), quản lý việc gửi thông báo đến các thiết bị của người dùng)
++├── /Extensions
++│   ├── /ServiceCollectionExtensions.cs (Chứa các phương thức mở rộng để đăng ký các dịch vụ vào Dependency Injection container)
++│   └── /MiddlewareExtensions.cs (Chứa các phương thức mở rộng để thêm các middleware vào pipeline xử lý HTTP của ứng dụng, giúp cấu hình các xử lý trung gian như logging, authentication)
++└── /External
++    ├── /ApiClients
++    │   ├── {Name}ApiClient.cs (Các lớp client cho việc gọi các API bên ngoài, quản lý việc giao tiếp với các dịch vụ ngoài ứng dụng, như dịch vụ thanh toán hoặc dịch vụ thông báo)
++    └── /ThirdPartyIntegrations
++        └── {ServiceName}Integration.cs (Chứa các lớp tích hợp với các dịch vụ bên thứ ba, quản lý việc tích hợp và giao tiếp với các hệ thống hoặc dịch vụ bên ngoài khác, ví dụ như tích hợp với một hệ thống quản lý danh tính của bên thứ ba)
++```
++
++### 4. Presentation Layer (WebApi)
++- Chứa các thành phần liên quan đến API
++  
++**Thư mục:**
++```
++/Presentation
++├── /Controllers (Chứa các lớp Controller của ứng dụng, mỗi controller sẽ đại diện cho một tập hợp các hành động liên quan đến một tính năng cụ thể)
++│   ├── {FeatureName}Controller.cs
++├── /Filters (Chứa các bộ lọc (filters) để áp dụng các logic cắt ngang cho các hành động của controller)
++│   ├── ValidationFilter.cs
++│   ├── ExceptionFilter.cs
++│   ├── {FilterName}Filter.cs
++├── /Middlewares (Chứa các lớp middleware để xử lý các yêu cầu HTTP trước khi chúng đến controller hoặc sau khi chúng đã được xử lý)
++│   ├── CustomExceptionMiddleware.cs
++│   ├── RequestLoggingMiddleware.cs
++├── /Models (Chứa các lớp mô hình (models) được sử dụng để nhận và gửi dữ liệu qua API)
++│   ├── {FeatureName}RequestModel.cs
++│   ├── {FeatureName}ResponseModel.cs
++├── /Dtos (Chứa các Data Transfer Objects (DTOs) được sử dụng để trao đổi dữ liệu giữa các tầng khác nhau của ứng dụng)
++│   └── {FeatureName}Dto.cs
++├── /Configurations (Chứa các cấu hình liên quan đến API)
++│   ├── SwaggerConfiguration.cs (Cấu hình Swagger cho việc tạo tài liệu API tự động)
++│   ├── ApiVersioningConfiguration.cs (Cấu hình phiên bản API để hỗ trợ nhiều phiên bản API trong cùng một ứng dụng)
++└── /Extensions (Chứa các phương thức mở rộng)
++    ├── ServiceCollectionExtensions.cs (Để thêm các dịch vụ vào IServiceCollection, giúp cấu hình Dependency Injection cho các dịch vụ như MediatR, Unit of Work)
++    └── ApplicationBuilderExtensions.cs (Để thêm các middleware vào pipeline HTTP, ví dụ như thêm CustomExceptionMiddleware hoặc Swagger)
++```
++
++### 5. Test Projects
++Chứa các dự án kiểm thử cho từng layer, bao gồm:
++- **Domain.Tests:** Kiểm thử cho Domain Layer.
++- **Application.Tests:** Kiểm thử cho Application Layer.
++- **Infrastructure.Tests:** Kiểm thử cho Infrastructure Layer.
++- **WebApi.Tests:** Kiểm thử cho WebApi Layer.
++
++```
++tests  
++├── Domain.Tests  
++│   └── UnitTests  
++├── Application.Tests  
++│   ├── UnitTests  
++│   └── FunctionalTests  
++├── Infrastructure.Tests  
++│   └── IntegrationTests  
++└── WebApi.Tests  
++│   └── IntegrationTests  
++```
++
++## Thiết lập và chạy dự án
++
++### 1. Cài đặt các công cụ cần thiết
++Đảm bảo bạn đã cài đặt các công cụ sau:
++- [.NET Core SDK](https://dotnet.microsoft.com/download)
++- [Entity Framework Core CLI](https://docs.microsoft.com/en-us/ef/core/cli/dotnet)
++
++### 2. Tạo và áp dụng migration
++Tạo database và áp dụng các migration:
++```bash
++# Phụ trách phần migrations
++dotnet ef migrations add <Name> --project src/Epay.eGateKeeper.Infrastructure --startup-project src/Epay.eGateKeeper.WebApi -o Demo/Migrations -- --environment Test
++
++# Developer
++dotnet ef migrations add <Name> --project src/Epay.eGateKeeper.Infrastructure --startup-project src/Epay.eGateKeeper.WebApi -- --environment Local
++```
++Cập nhật database:
++```bash
++dotnet ef database update --project src/Epay.eGateKeeper.Infrastructure --startup-project src/Epay.eGateKeeper.WebApi -- --environment Local
++```
++*Lưu ý: Không đẩy Migration của DEV lên git, chỉ người quản lý dự án tạo migration và update migration vào git*
++
++### 3. Chạy ứng dụng
++Chạy ứng dụng từ thư mục `WebApi`:
++```bash
++dotnet run --project src/Epay.eGateKeeper.WebApi
++```
++
++### 4. Chạy các kiểm thử
++Chạy tất cả các bài kiểm thử:
++```bash
++dotnet test
++```
++
++## Ghi chú
++- `src/Domain`: Chứa các thành phần cốt lõi của ứng dụng.
++- `src/Application`: Chứa các logic nghiệp vụ.
++- `src/Infrastructure`: Chứa các triển khai chi tiết và tích hợp hạ tầng.
++- `src/WebApi`: Chứa các endpoint API và logic liên quan.
++- `tests`: Chứa các dự án kiểm thử cho từng layer của ứng dụng.
++
++## Conventional Commits
++
++### Cấu trúc chung của một thông điệp commit theo chuẩn Conventional Commits:
++```
++<type>(<scope>): <subject>
++
++<body>
++
++<footer>
++```
++#### Các loại (types) thông dụng:
++- feat: Thêm một tính năng mới
++- fix: Sửa một lỗi
++- docs: Thay đổi tài liệu
++- style: Thay đổi về format, không ảnh hưởng tới mã code (spaces, formatting, missing semi-colons, etc.)
++- refactor: Thay đổi mã nguồn mà không sửa lỗi hoặc thêm tính năng
++- perf: Cải thiện hiệu suất
++- test: Thêm hoặc sửa test
++- build: Thay đổi hệ thống build hoặc các phụ thuộc bên ngoài (các thư viện, công cụ)
++- ci: Thay đổi file cấu hình hoặc script liên quan tới CI (Continuous Integration)
++- chore: Thay đổi nhỏ không ảnh hưởng tới mã nguồn (cập nhật dependencies, etc.)
++- revert: Quay lại một commit trước đó
++
++#### Ví dụ cụ thể:
++
++1. Thêm một tính năng mới:
++```
++feat(auth): add login functionality
++
++Implement login functionality with JWT authentication.
++
++Closes #123
++```
++
++2. Sửa một lỗi:
++```
++fix(api): fix user registration error
++
++Fixes a bug where the user registration endpoint would return a 500 error when the email was already in use.
++
++Closes #456
++```
++
++3. Thay đổi tài liệu:
++```
++docs(readme): update installation instructions
++
++Updated the installation instructions to include information about environment variables.
++```
++
++4. Cải thiện hiệu suất:
++```
++perf(database): optimize query performance
++
++Optimized the user query by adding an index to the email column.
++```
++
++5. Thêm hoặc sửa test:
++```
++test(api): add tests for user registration
++
++Added unit tests for the user registration endpoint.
++```
+\ No newline at end of file
+Index: src/MinimalApi.WebApi/Controllers/Authentications/AuthenticationController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.WebApi/Controllers/Authentications/AuthenticationController.cs b/src/MinimalApi.WebApi/Controllers/Authentications/AuthenticationController.cs
+new file mode 100644
+--- /dev/null	(date 1739525910946)
++++ b/src/MinimalApi.WebApi/Controllers/Authentications/AuthenticationController.cs	(date 1739525910946)
+@@ -0,0 +1,27 @@
++using MediatR;
++using Microsoft.AspNetCore.Identity.Data;
++using Microsoft.AspNetCore.Mvc;
++using ILogger = Serilog.ILogger;
++
++namespace MinimalProject.Controllers.Authentications;
++
++[Route("api/v1/[controller]")]
++public class AuthenticationController(
++    IMediator mediator,
++    ILogger logger) : BaseController
++{
++    [HttpPost("login")]
++    public async Task<IActionResult> Login([FromBody] LoginRequest request)
++    {
++        try
++        {
++            var response = await mediator.Send(request);
++            return Ok(response);
++        }
++        catch (Exception e)
++        {
++            logger.Error(e, "Error when login");
++            return BadRequest();
++        }
++    }
++}
+\ No newline at end of file
+Index: Common.Logging/Serilogger.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Common.Logging/Serilogger.cs b/Common.Logging/Serilogger.cs
+new file mode 100644
+--- /dev/null	(date 1739527076749)
++++ b/Common.Logging/Serilogger.cs	(date 1739527076749)
+@@ -0,0 +1,24 @@
++using Microsoft.Extensions.Hosting;
++using Serilog;
++
++namespace Common.Logging;
++
++public static class Serilogger
++{
++    public static Action<HostBuilderContext, LoggerConfiguration> Configure =>
++        (context, configuration) =>
++        {
++            var applicationName = context.HostingEnvironment.ApplicationName.ToLower().Replace(".", "-");
++            var enviromentName = context.HostingEnvironment.EnvironmentName.ToLower();
++            
++            configuration
++                .WriteTo.Debug()
++                .WriteTo.Console(outputTemplate:
++                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}-{Message:lj}{NewLine}{Exception}{NewLine}")
++                .Enrich.FromLogContext()
++                .Enrich.WithProperty("ApplicationName", applicationName)
++                .Enrich.WithProperty("Environment", enviromentName)
++                .Enrich.WithProperty("MachineName", Environment.MachineName)
++                .ReadFrom.Configuration(context.Configuration);
++        };
++}
+\ No newline at end of file
+Index: src/MinimalApi.WebApi/Controllers/Banks/BanksController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.WebApi/Controllers/Banks/BanksController.cs b/src/MinimalApi.WebApi/Controllers/Banks/BanksController.cs
+new file mode 100644
+--- /dev/null	(date 1739527156232)
++++ b/src/MinimalApi.WebApi/Controllers/Banks/BanksController.cs	(date 1739527156232)
+@@ -0,0 +1,17 @@
++using Microsoft.AspNetCore.Mvc;
++using ILogger = Serilog.ILogger;
++
++namespace MinimalProject.Controllers.Banks;
++
++[Route("api/v1/[controller]")]
++public class BanksController(ILogger logger) : BaseController
++{
++    [HttpGet]
++    public async Task<IActionResult> GetBanks()
++    {
++        await Task.CompletedTask;
++        logger.Information("Get all banks");
++        logger.Error(new NotImplementedException(), "Exception in GetBanks");
++        return Ok();
++    }
++}
+\ No newline at end of file
+Index: src/MinimalApi.Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs b/src/MinimalApi.Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs
+new file mode 100644
+--- /dev/null	(date 1739522336593)
++++ b/src/MinimalApi.Infrastructure/Migrations/ApplicationDbContextModelSnapshot.cs	(date 1739522336593)
+@@ -0,0 +1,902 @@
++// <auto-generated />
++using System;
++using Microsoft.EntityFrameworkCore;
++using Microsoft.EntityFrameworkCore.Infrastructure;
++using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
++using MinimalApi.Infrastructure.Persistences;
++using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
++
++#nullable disable
++
++namespace MinimalApi.Infrastructure.Migrations
++{
++    [DbContext(typeof(ApplicationDbContext))]
++    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
++    {
++        protected override void BuildModel(ModelBuilder modelBuilder)
++        {
++#pragma warning disable 612, 618
++            modelBuilder
++                .HasAnnotation("ProductVersion", "8.0.11")
++                .HasAnnotation("Relational:MaxIdentifierLength", 63);
++
++            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Address", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<string>("AddressType")
++                        .IsRequired()
++                        .HasColumnType("varchar(15)");
++
++                    b.Property<string>("Addresses")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)");
++
++                    b.Property<int>("CountryId")
++                        .HasColumnType("integer");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<long>("CustomerId")
++                        .HasColumnType("bigint");
++
++                    b.Property<int>("DistrictId")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsActive")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsDeleted")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("PostalCode")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)");
++
++                    b.Property<int>("ProvinceId")
++                        .HasColumnType("integer");
++
++                    b.Property<long>("UserId")
++                        .HasColumnType("bigint");
++
++                    b.Property<int>("WardId")
++                        .HasColumnType("integer");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("CountryId");
++
++                    b.HasIndex("CustomerId");
++
++                    b.HasIndex("DistrictId");
++
++                    b.HasIndex("ProvinceId");
++
++                    b.HasIndex("WardId");
++
++                    b.ToTable("Address");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Bank", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<decimal>("Balance")
++                        .HasColumnType("decimal(18,2)");
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<int>("IsActive")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsDeleted")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("NameEn")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("SwiftCode")
++                        .IsRequired()
++                        .HasColumnType("varchar(11)");
++
++                    b.HasKey("Id");
++
++                    b.ToTable("Banks");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Contract", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<long>("CustomerId")
++                        .HasColumnType("bigint");
++
++                    b.Property<DateTimeOffset>("EndDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("FileUrl")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)");
++
++                    b.Property<int>("IsActive")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsDeleted")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<int>("PartnerId")
++                        .HasColumnType("integer");
++
++                    b.Property<long>("PartnerId1")
++                        .HasColumnType("bigint");
++
++                    b.Property<string>("PhysicalFileUrl")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)");
++
++                    b.Property<DateTimeOffset>("StartDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("nonAccentCode")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("CustomerId");
++
++                    b.HasIndex("PartnerId1");
++
++                    b.ToTable("Contracts");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Country", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<int>("ActiveFLG")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(30)");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("NameEn")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.HasKey("Id");
++
++                    b.ToTable("Countries");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Customer", b =>
++                {
++                    b.Property<long>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("bigint");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<string>("CustomerName")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("EmailAddress")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("FirstName")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("FullName")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<int>("IsActive")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsDeleted")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("LastName")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("Password")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("PictureURL")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex(new[] { "EmailAddress" }, "IX_Customer_Email_Descending")
++                        .IsDescending()
++                        .HasAnnotation("Npgsql:IndexOps", "gin_trgm_ops");
++
++                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex(new[] { "EmailAddress" }, "IX_Customer_Email_Descending"), "gin");
++
++                    b.HasIndex(new[] { "FullName" }, "IX_Customer_FullName_Descending")
++                        .IsDescending()
++                        .HasAnnotation("Npgsql:IndexOps", "gin_trgm_ops");
++
++                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex(new[] { "FullName" }, "IX_Customer_FullName_Descending"), "gin");
++
++                    b.ToTable("Customers");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.District", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<int>("ActiveFLG")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(30)");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("NameEn")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<int>("ProvinceId")
++                        .HasColumnType("integer");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("ProvinceId");
++
++                    b.ToTable("Districts");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.IdentityCustomer", b =>
++                {
++                    b.Property<long>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("bigint");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
++
++                    b.Property<long>("CustomerId")
++                        .HasColumnType("bigint");
++
++                    b.Property<DateTimeOffset>("DateOfBirth")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<DateTimeOffset>("DateOfExpiry")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<DateTimeOffset>("DateOfIssue")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Ethnic")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("FatherFullName")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("FullName")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<int>("Gender")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("HomeTown")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("IdentitfyingCharacteristics")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("MotherFullName")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("Nationality")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("Number")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("OldIdentityDocumentNumber")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<int>("OldIdentityDocumentType")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("PermanentAddress")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("PlaceOfBirth")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("Religion")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<string>("SpouseFullName")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("TemporaryAddress")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<int>("Type")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("VisaNumber")
++                        .IsRequired()
++                        .HasColumnType("varchar(15)");
++
++                    b.Property<short>("VisaType")
++                        .HasColumnType("smallint");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("CustomerId");
++
++                    b.ToTable("IdentityCustomers");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Partner", b =>
++                {
++                    b.Property<long>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("bigint");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
++
++                    b.Property<string>("Address")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)");
++
++                    b.Property<string>("BankAccountNumber")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<int>("BankId")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<long>("CustomerId")
++                        .HasColumnType("bigint");
++
++                    b.Property<string>("Fax")
++                        .IsRequired()
++                        .HasColumnType("varchar(30)");
++
++                    b.Property<int>("IsActive")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsDeleted")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("NumberPhone")
++                        .IsRequired()
++                        .HasColumnType("varchar(15)");
++
++                    b.Property<string>("RepresentativeName")
++                        .IsRequired()
++                        .HasColumnType("varchar(150)");
++
++                    b.Property<string>("TaxCode")
++                        .IsRequired()
++                        .HasColumnType("varchar(30)");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("BankId");
++
++                    b.HasIndex("CustomerId");
++
++                    b.ToTable("Partners");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Province", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<int>("ActiveFLG")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(30)");
++
++                    b.Property<int>("CountryId")
++                        .HasColumnType("integer");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("NameEn")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("CountryId");
++
++                    b.ToTable("Provinces");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Transaction", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<string>("AccountNumber")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)")
++                        .HasColumnName("AccountNumber")
++                        .HasAnnotation("Relational:JsonPropertyName", "account_number");
++
++                    b.Property<decimal>("Accumulated")
++                        .HasColumnType("numeric")
++                        .HasAnnotation("Relational:JsonPropertyName", "accumulated");
++
++                    b.Property<decimal>("AmountIn")
++                        .HasColumnType("numeric")
++                        .HasAnnotation("Relational:JsonPropertyName", "amount_in");
++
++                    b.Property<decimal>("AmountOut")
++                        .HasColumnType("numeric")
++                        .HasAnnotation("Relational:JsonPropertyName", "amount_out");
++
++                    b.Property<decimal>("Balance")
++                        .HasColumnType("numeric");
++
++                    b.Property<string>("BankBrandName")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)")
++                        .HasColumnName("BankBrandName")
++                        .HasAnnotation("Relational:JsonPropertyName", "bank_brand_name");
++
++                    b.Property<int>("BankId")
++                        .HasColumnType("integer");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<int>("IsActive")
++                        .HasColumnType("integer");
++
++                    b.Property<int>("IsDeleted")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("ReferenceNumber")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)")
++                        .HasColumnName("ReferenceNumber")
++                        .HasAnnotation("Relational:JsonPropertyName", "reference_number");
++
++                    b.Property<string>("SubAccount")
++                        .IsRequired()
++                        .HasColumnType("varchar(50)")
++                        .HasColumnName("SubAccount")
++                        .HasAnnotation("Relational:JsonPropertyName", "sub_account");
++
++                    b.Property<string>("TransactionContent")
++                        .IsRequired()
++                        .HasColumnType("varchar(255)")
++                        .HasColumnName("TransactionContent")
++                        .HasAnnotation("Relational:JsonPropertyName", "transaction_content");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("BankId");
++
++                    b.ToTable("Transactions");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Ward", b =>
++                {
++                    b.Property<int>("Id")
++                        .ValueGeneratedOnAdd()
++                        .HasColumnType("integer");
++
++                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
++
++                    b.Property<int>("ActiveFLG")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("Code")
++                        .IsRequired()
++                        .HasColumnType("varchar(30)");
++
++                    b.Property<DateTimeOffset>("CreatedDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("CreatedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<int>("DistrictId")
++                        .HasColumnType("integer");
++
++                    b.Property<string>("LastModifiedUser")
++                        .HasColumnType("character(25)");
++
++                    b.Property<DateTimeOffset>("LastModifiredDate")
++                        .HasColumnType("timestamp with time zone");
++
++                    b.Property<string>("Name")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.Property<string>("NameEn")
++                        .IsRequired()
++                        .HasColumnType("varchar(100)");
++
++                    b.HasKey("Id");
++
++                    b.HasIndex("DistrictId");
++
++                    b.ToTable("Wards");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Address", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Country", "Country")
++                        .WithMany("Addresses")
++                        .HasForeignKey("CountryId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Customer", "Customer")
++                        .WithMany("Addresses")
++                        .HasForeignKey("CustomerId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.District", "District")
++                        .WithMany("Addresses")
++                        .HasForeignKey("DistrictId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Province", "Province")
++                        .WithMany("Addresses")
++                        .HasForeignKey("ProvinceId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Ward", "Ward")
++                        .WithMany("Addresses")
++                        .HasForeignKey("WardId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Country");
++
++                    b.Navigation("Customer");
++
++                    b.Navigation("District");
++
++                    b.Navigation("Province");
++
++                    b.Navigation("Ward");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Contract", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Customer", "Customer")
++                        .WithMany("Contracts")
++                        .HasForeignKey("CustomerId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Partner", "Partner")
++                        .WithMany("Contract")
++                        .HasForeignKey("PartnerId1")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Customer");
++
++                    b.Navigation("Partner");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.District", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Province", "Province")
++                        .WithMany("Districts")
++                        .HasForeignKey("ProvinceId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Province");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.IdentityCustomer", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Customer", "Customer")
++                        .WithMany("IdentityCustomer")
++                        .HasForeignKey("CustomerId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Customer");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Partner", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Bank", "Bank")
++                        .WithMany("Partners")
++                        .HasForeignKey("BankId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Customer", "Customer")
++                        .WithMany("Partners")
++                        .HasForeignKey("CustomerId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Bank");
++
++                    b.Navigation("Customer");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Province", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Country", "Country")
++                        .WithMany("Province")
++                        .HasForeignKey("CountryId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Country");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Transaction", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.Bank", "Bank")
++                        .WithMany("Transactions")
++                        .HasForeignKey("BankId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("Bank");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Ward", b =>
++                {
++                    b.HasOne("MinimalApi.WebApi.Domain.Entities.District", "District")
++                        .WithMany("Wards")
++                        .HasForeignKey("DistrictId")
++                        .OnDelete(DeleteBehavior.Cascade)
++                        .IsRequired();
++
++                    b.Navigation("District");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Bank", b =>
++                {
++                    b.Navigation("Partners");
++
++                    b.Navigation("Transactions");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Country", b =>
++                {
++                    b.Navigation("Addresses");
++
++                    b.Navigation("Province");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Customer", b =>
++                {
++                    b.Navigation("Addresses");
++
++                    b.Navigation("Contracts");
++
++                    b.Navigation("IdentityCustomer");
++
++                    b.Navigation("Partners");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.District", b =>
++                {
++                    b.Navigation("Addresses");
++
++                    b.Navigation("Wards");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Partner", b =>
++                {
++                    b.Navigation("Contract");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Province", b =>
++                {
++                    b.Navigation("Addresses");
++
++                    b.Navigation("Districts");
++                });
++
++            modelBuilder.Entity("MinimalApi.WebApi.Domain.Entities.Ward", b =>
++                {
++                    b.Navigation("Addresses");
++                });
++#pragma warning restore 612, 618
++        }
++    }
++}
+Index: src/MinimalApi.WebApi/Controllers/Customers/CustomersController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.WebApi/Controllers/Customers/CustomersController.cs b/src/MinimalApi.WebApi/Controllers/Customers/CustomersController.cs
+new file mode 100644
+--- /dev/null	(date 1736147500874)
++++ b/src/MinimalApi.WebApi/Controllers/Customers/CustomersController.cs	(date 1736147500874)
+@@ -0,0 +1,72 @@
++using MediatR;
++using Microsoft.AspNetCore.Mvc;
++using MinimalApi.Application.Features;
++using MinimalApi.Application.Features.Commands.CreateCustomer;
++using MinimalApi.Application.Features.Commands.DeleteUser;
++using MinimalApi.Application.Features.Commands.UpdateCustomer;
++using MinimalApi.Application.Features.Queries.GetUserById;
++
++namespace MinimalProject.Controllers.Customers;
++
++[Route("api/v1/[controller]")]
++public class CustomersController(ILogger<CustomersController> logger, IMediator mediator) : BaseController
++{
++    [HttpGet]
++    public async Task<IActionResult> GetCustomers([FromQuery] GetCustomersPaginationQuery query)
++    {
++        if(!ModelState.IsValid)
++            return BadRequest(query);
++
++        var result = await mediator.Send(query);
++        return Ok(result);
++    }
++
++    [HttpGet("{id}")]
++    public async Task<IActionResult> GetCustomerById([FromRoute] long id)
++    {
++        var query = new GetCustomerByIdQuery
++        {
++            Id = id
++        };
++        
++        if(!ModelState.IsValid)
++            return BadRequest(query);
++
++        var result = await mediator.Send(query);
++        return Ok(result);
++    }
++
++    [HttpPost]
++    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand command)
++    {
++        if(!ModelState.IsValid)
++            return BadRequest(command);
++
++        var result = await mediator.Send(command);
++        return Ok(result);
++    }
++
++    [HttpPut("{id}")]
++    public async Task<IActionResult> UpdateCustomer([FromRoute] long id, [FromBody] UpdateCustomerCommand command)
++    {
++        if(!ModelState.IsValid)
++            return BadRequest(command);
++
++        command.Id = id;
++        var result = await mediator.Send(command);
++        return Ok(result);
++    }
++
++    [HttpDelete("{id}")]
++    public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
++    {
++        if(!ModelState.IsValid)
++            return BadRequest(id);
++
++        var command = new DeleteCustomerCommand();
++        command.SetId(id);
++        var result = await mediator.Send(command);
++        
++        return Ok(result);
++    }
++}
+Index: src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommand.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommand.cs b/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommand.cs
+new file mode 100644
+--- /dev/null	(date 1736148083587)
++++ b/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommand.cs	(date 1736148083587)
+@@ -0,0 +1,18 @@
++using MediatR;
++using MinimalApi.Infrastructure.Shared;
++
++namespace MinimalApi.Application.Features;
++
++public class CreateTransactionCommand : IRequest<ApiResult<int>>
++{
++    public required string AccountNumber { get; set; }
++    public string SubAccount { get; set; }
++    public required string TransactionContent { get; set; }
++    public required decimal Balance { get; set; }
++    public required string ReferenceNumber { get; set; }
++    public required string BankBrandName { get; set; }
++    public required decimal AmountIn { get; set; }
++    public required decimal AmountOut { get; set; }
++    public required string Accumulated { get; set; }
++    public int BankId { get; set; }
++}
+\ No newline at end of file
+Index: src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandValidator.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandValidator.cs b/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandValidator.cs
+new file mode 100644
+--- /dev/null	(date 1736148152915)
++++ b/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandValidator.cs	(date 1736148152915)
+@@ -0,0 +1,18 @@
++using FluentValidation;
++
++namespace MinimalApi.Application.Features;
++
++public class CreateTransactionCommandValidator : AbstractValidator<CreateTransactionCommand>
++{
++    public CreateTransactionCommandValidator()
++    {
++        RuleFor(x => x.AccountNumber)
++            .NotEmpty().WithMessage("[PropertyName] is required");
++        RuleFor(x => x.AmountIn)
++            .GreaterThan(0).WithMessage("[PropertyName] mus be greater than 0");
++        RuleFor(x => x.AmountOut)
++            .GreaterThan(0).WithMessage("[PropertyName] mus be greater than 0");
++        RuleFor(x => x.BankBrandName)
++            .NotEmpty().WithMessage("[PropertyName] mus be greater than 0");
++    }
++}
+\ No newline at end of file
+Index: src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandHandler.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandHandler.cs b/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandHandler.cs
+new file mode 100644
+--- /dev/null	(date 1736150120521)
++++ b/src/MinimalApi.Application/Features/Commands/Transactions/CreateTransaction/CreateTransactionCommandHandler.cs	(date 1736150120521)
+@@ -0,0 +1,22 @@
++using AutoMapper;
++using MediatR;
++using MinimalApi.Domain.Entities;
++using MinimalApi.Infrastructure.Repositories;
++using MinimalApi.Infrastructure.Shared;
++
++namespace MinimalApi.Application.Features;
++
++public class CreateTransactionCommandHandler(TransactionRepository transactionRepository, IMapper mapper) : IRequestHandler<CreateTransactionCommand, ApiResult<int>>
++{
++    public async Task<ApiResult<int>> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
++    {
++        var transaction = mapper.Map<Transaction>(request);
++        
++        await transactionRepository.CreateTransactionAsync(transaction);
++        var result = await transactionRepository.SaveChangesAsync();
++        
++        return result > 0 ? 
++            ApiSuccessResult<int>.Instance.WithData(result) 
++            : ApiFailedResult<int>.Instance;
++    }
++}
+\ No newline at end of file
+Index: src/docker-compose.override.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>version: \"3.9\"\r\n\r\nservices:\r\n  # database section\r\n  postgredb:\r\n    container_name: postgredb\r\n    environment:\r\n      - POSTGRES_USER=admin\r\n      - POSTGRES_PASSWORD=admin1234\r\n      - POSTGRES_DB=DiscountDb\r\n    restart: always\r\n    ports:\r\n      - \"5433:5432\"\r\n    volumes:\r\n      - postgredb_data:/var/lib/postgresql/data\r\n  \r\n  pgadmin:\r\n    container_name: pdadmin\r\n    environment:\r\n      - PGADMIN_DEFAULT_EMAIL=longvn@epayjsc.com\r\n      - PGADMIN_DEFAULT_PASSWORD=admin1234\r\n    restart: always\r\n    ports:\r\n      - \"5050:80\"\r\n    volumes:\r\n      - pgadmin_data:/root/.pgadmin\r\n    \r\n  redis:\r\n    container_name: redis\r\n    restart: always\r\n    ports:\r\n      - \"6379:6379\"\r\n\r\n  
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/docker-compose.override.yml b/src/docker-compose.override.yml
+--- a/src/docker-compose.override.yml	(revision 28a8f5a180a94c574d5d9a277e6f0427ce0729ae)
++++ b/src/docker-compose.override.yml	(date 1736992186380)
+@@ -30,5 +30,54 @@
+     restart: always
+     ports:
+       - "6379:6379"
++  
++  rabbitmq:
++    container_name: rabbitmq
++    restart: always
++    ports:
++      - "5672:5672"
++      - "15672:15672"
+ 
+-  
+\ No newline at end of file
++#  zookeeper:
++#    container_name: zookeeper
++#    environment:
++#      ZOOKEEPER_CLIENT_PORT: 2181
++#      ZOOKEEPER_TICK_TIME: 2000
++#    ports:
++#      - 22181:2181
++#    networks:
++#      - epay_networks
++#      
++#  kafka:
++#    container_name: kafka
++#    depends_on:
++#      - zookeeper
++#    ports:
++#      - "9092:9092"
++#      - "9093:9093"
++#    networks:
++#      - epay_networks
++#    environment:
++#      KAFKA_BROKER_ID: 1
++#      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
++#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
++#      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
++#      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
++#      KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_C://0.0.0.0:9093,PLAINTEXT_L://0.0.0.0:9092,
++#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://broker:29092,PLAINTEXT_L://localhost:9092,PLAINTEXT_C://broker:9093
++#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_L:PLAINTEXT,PLAINTEXT_C:PLAINTEXT
++#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
++#      
++#  kafka-ui:
++#    container_name: kafka-ui
++#    networks:
++#      - epay_networks
++#    depends_on:
++#      - broker
++#    ports:
++#      - "7777:8080"
++#    restart: always
++#    environment:
++#      - KAFKA_CLUSTERS_0_NAME=broker
++#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker:9093
++#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+\ No newline at end of file
+Index: src/docker-compose.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>version: \"3.9\"\r\n\r\nservices:\r\n  # database section\r\n  postgredb:\r\n    image: postgres\r\n    \r\n  pgadmin:\r\n    image: dpage/pgadmin4\r\n    \r\n  redis:\r\n    image: redis:alpine\r\n  \r\n#network section\r\nnetworks:\r\n  defaults:\r\n    name: epay_networks\r\n    driver: bridge\r\n    \r\n#volumes section    \r\nvolumes:\r\n  postgredb_data: \r\n    name: postgredb_data\r\n  pgadmin_data:\r\n    name: pgadmin_data\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/docker-compose.yml b/src/docker-compose.yml
+--- a/src/docker-compose.yml	(revision 28a8f5a180a94c574d5d9a277e6f0427ce0729ae)
++++ b/src/docker-compose.yml	(date 1736992194644)
+@@ -10,7 +10,19 @@
+     
+   redis:
+     image: redis:alpine
++    
++  rabbitmq:
++    image: rabbitmq:3-management-alpine
++    
++#  zookeeper:
++#    image: confluentinc/cp-zookeeper:7.0.1
+   
++#  kafka:
++#    image: confluentinc/cp-kafka:7.0.1
++  
++#  kafka-ui:
++#    image: provectuslabs/kafka-ui
++  
+ #network section
+ networks:
+   defaults:
+Index: src/MinimalApi.Infrastructure/Persistences/Configurations/CustomerConfiguration.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Infrastructure/Persistences/Configurations/CustomerConfiguration.cs b/src/MinimalApi.Infrastructure/Persistences/Configurations/CustomerConfiguration.cs
+new file mode 100644
+--- /dev/null	(date 1739519851428)
++++ b/src/MinimalApi.Infrastructure/Persistences/Configurations/CustomerConfiguration.cs	(date 1739519851428)
+@@ -0,0 +1,24 @@
++using Microsoft.EntityFrameworkCore;
++using Microsoft.EntityFrameworkCore.Metadata.Builders;
++using MinimalApi.Domain.Entities;
++
++namespace MinimalApi.Infrastructure.Persistences.Configurations;
++
++public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
++{
++    public void Configure(EntityTypeBuilder<Customer> builder)
++    {
++        builder
++            .HasIndex(c => c.FullName, "IX_Customer_FullName_Descending")
++            .HasMethod("gin")
++            .HasAnnotation("Npgsql:IndexOps", "gin_trgm_ops")
++            .IsDescending();
++
++        builder
++            .HasIndex(c => c.EmailAddress, "IX_Customer_Email_Descending")
++            .HasMethod("gin")
++            .HasAnnotation("Npgsql:IndexOps", "gin_trgm_ops")
++            .IsDescending();
++
++    }
++}
+\ No newline at end of file
+Index: src/MinimalApi.WebApi/Endpoints/Check/ChecksEndpoint.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.WebApi/Endpoints/Check/ChecksEndpoint.cs b/src/MinimalApi.WebApi/Endpoints/Check/ChecksEndpoint.cs
+new file mode 100644
+--- /dev/null	(date 1735627638318)
++++ b/src/MinimalApi.WebApi/Endpoints/Check/ChecksEndpoint.cs	(date 1735627638318)
+@@ -0,0 +1,19 @@
++using MediatR;
++using MinimalApi.Application.Features.Queries.Check;
++
++namespace MinimalProject.Endpoints.Check;
++
++public class ChecksEndpoint : IEndpoint
++{
++    public void MapEndpoint(IEndpointRouteBuilder routeBuilder)
++    {
++        routeBuilder.MapGet("/ping", async (IMediator mediator) =>
++        {
++            await mediator.Publish(new Ping());
++            return Results.Ok();
++        }).WithOpenApi();
++    }
++
++    public string Group { get; } = nameof(ChecksEndpoint).Split("Endpoint").First().ToLower();
++    public string Version { get; } = "api/v1";
++}
+\ No newline at end of file
+Index: src/MinimalApi.Application/Features/Queries/Check/Ping.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Application/Features/Queries/Check/Ping.cs b/src/MinimalApi.Application/Features/Queries/Check/Ping.cs
+new file mode 100644
+--- /dev/null	(date 1735626554013)
++++ b/src/MinimalApi.Application/Features/Queries/Check/Ping.cs	(date 1735626554013)
+@@ -0,0 +1,5 @@
++using MediatR;
++
++namespace MinimalApi.Application.Features.Queries.Check;
++
++public class Ping : INotification  { }
+\ No newline at end of file
+Index: src/MinimalApi.Application/Features/Queries/Check/PingHandler.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MinimalApi.Application/Features/Queries/Check/PingHandler.cs b/src/MinimalApi.Application/Features/Queries/Check/PingHandler.cs
+new file mode 100644
+--- /dev/null	(date 1735626573009)
++++ b/src/MinimalApi.Application/Features/Queries/Check/PingHandler.cs	(date 1735626573009)
+@@ -0,0 +1,21 @@
++using MediatR;
++
++namespace MinimalApi.Application.Features.Queries.Check;
++
++public class Pong1 : INotificationHandler<Ping>
++{
++    public Task Handle(Ping notification, CancellationToken cancellationToken)
++    {
++        Console.WriteLine("Pong 1");
++        return Task.CompletedTask;
++    }
++}
++
++public class Pong2 : INotificationHandler<Ping>
++{
++    public Task Handle(Ping notification, CancellationToken cancellationToken)
++    {
++        Console.WriteLine("Pong 2");
++        return Task.CompletedTask;
++    }
++}
+\ No newline at end of file
