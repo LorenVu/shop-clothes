@@ -20,7 +20,7 @@ public static class ApplicationExtensions
         // app.UseHttpsRedirection(); //for production only
         app.UseResponseCaching();
         app.UseRequestTimeouts();
-        app.UseMiddleware<CustomErrorHandlerMiddleware>();
+        app.UseExceptionHandling();
         app.UseAuthentication();
         app.UseAuthorization();
         

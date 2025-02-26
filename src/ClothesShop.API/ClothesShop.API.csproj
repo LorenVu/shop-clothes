@@ -28,8 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Common.Logging\Common.Logging.csproj" />
-      <ProjectReference Include="..\..\Shared\Shared.csproj" />
       <ProjectReference Include="..\BuildingBlock\Common.Logging\Common.Logging.csproj" />
       <ProjectReference Include="..\BuildingBlock\Shared\Shared.csproj" />
       <ProjectReference Include="..\ClothesShop.Application\ClothesShop.Application.csproj" />

@@ -1,10 +1,12 @@
 using System.Net;
 using System.Net.Mime;
+using System.Reflection.Metadata;
 using System.Text;
 using BuildingBlock.Shared.Configs;
 using BuildingBlock.Shared.Seeds;
 using Clothes.Domain.Extensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
@@ -14,8 +16,7 @@ namespace Shared.Middlewares;
 
 public class CustomErrorHandlerMiddleware(RequestDelegate next)
 {
-    public const string ErrorHandlerMiddlewareContext = nameof(CustomErrorHandlerMiddleware);
-
+    public const string CustomErrorHandlerMiddlewareContext = nameof(CustomErrorHandlerMiddleware);
     
     public async Task InvokeAsync(HttpContext context)
     {
@@ -59,7 +60,7 @@ public class CustomErrorHandlerMiddleware(RequestDelegate next)
                 {
                     var response = context.Response;
                     response.ContentType = MediaTypeNames.Application.Json;
-                    await response.WriteAsync(new ApiFailedResult<object>(CodeResponseMessage.PathIsNotExist).MySerialize());
+                    await response.WriteAsync(ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.PathIsNotExist).MySerialize());
                     
                     return;
                 }
@@ -68,7 +69,7 @@ public class CustomErrorHandlerMiddleware(RequestDelegate next)
                 {
                     var response = context.Response;
                     response.ContentType = MediaTypeNames.Application.Json;
-                    await response.WriteAsync(new ApiFailedResult<object>(CodeResponseMessage.MethodNotAllowed).MySerialize());
+                    await response.WriteAsync(ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.MethodNotAllowed).MySerialize());
                     
                     return;
                 }
@@ -78,7 +79,7 @@ public class CustomErrorHandlerMiddleware(RequestDelegate next)
                 {
                     var response = context.Response;
                     response.ContentType = MediaTypeNames.Application.Json;
-                    await response.WriteAsync(new ApiFailedResult<object>(CodeResponseMessage.SystemError).MySerialize());
+                    await response.WriteAsync(ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.SystemError).MySerialize());
                     
                     return;
                 }
@@ -86,82 +87,103 @@ public class CustomErrorHandlerMiddleware(RequestDelegate next)
         }
         catch (ValidationException ex)
         {
-            var errors = ex.Errors
-                .GroupBy(e => e.PropertyName)
-                .Select(
-                    g => string.Format(ResponseMessageConfigs.GetMessage(CodeResponseMessage.ValidationException), g.Key)
-                );
-
-            var messageBuilder = new StringBuilder();
-            var mesage = string.Join("", errors);
-            messageBuilder.AppendLine(mesage.Replace("[", "").Replace("]", "").Replace(".", ","));
-            messageBuilder.AppendLine(". Vui lòng quay lại sau vài phút!");
-
-            var result = ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.DataInValid, messageBuilder.ToString());
-
-            var response = context.Response;
-            response.ContentType = MediaTypeNames.Application.Json;
-            response.StatusCode = StatusCodes.Status400BadRequest;
-            await response.WriteAsync(result.MySerialize());
-
-            throw;
+            await HandleValidationException(context, ex);
         }
         catch (RetryLimitExceededException)
         {
-            var response = context.Response;
-            response.ContentType = MediaTypeNames.Application.Json;
-            ApiFailedResult<object> result;
-            
-            response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
-            result = new(CodeResponseMessage.DatabaseTimeout);
-            
-            await response.WriteAsync(result.MySerialize());
-
-            throw;
+            await HandleRetryLimitExceededException(context);
         }
         catch (InvalidCastException)
         {
-            var response = context.Response;
-            response.ContentType = MediaTypeNames.Application.Json;
-            ApiFailedResult<object> result;
-            
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
-            result = new(CodeResponseMessage.ExcuteSqlQueryError);
-            
-            await response.WriteAsync(result.MySerialize());
-
-            throw;
+            await HandleInvalidCastException(context);
         }
         catch (Exception error)
         {
-            Log.ForContext("SourceContext", context);
-            
-            var response = context.Response;
-            response.ContentType = MediaTypeNames.Application.Json;
-            ApiFailedResult<object> result;
-            
-            // Using switch for custom exception
-            switch (error)
-            {
-                // Add custom exception code below!
-                case TaskCanceledException ex1:
-                case OperationCanceledException ex2:
-                    response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
-                    result = new ApiFailedResult<object>(CodeResponseMessage.Timeout);
-                    break;
-                case BadRequestException:
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    result = new ApiFailedResult<object>(CodeResponseMessage.DataInValid);
-                    break;
-                default:
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    result = new ApiFailedResult<object>(CodeResponseMessage.SystemError);
-                    break;
-            }
-
-            await response.WriteAsync(result.MySerialize());
-            
-            throw;
+            await HandleExceptionError(context, error);
         }
+    }
+
+    private Task HandleValidationException(HttpContext context, ValidationException ex)
+    {
+        var errors = ex.Errors
+            .GroupBy(e => e.PropertyName)
+            .Select(
+                g => string.Format(ResponseMessageConfigs.GetMessage(CodeResponseMessage.ValidationException), g.Key)
+            );
+
+        var messageBuilder = new StringBuilder();
+        var mesage = string.Join("", errors);
+        messageBuilder.AppendLine(mesage.Replace("[", "").Replace("]", "").Replace(".", ","));
+        messageBuilder.AppendLine(". Vui lòng quay lại sau vài phút!");
+
+        var result = ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.DataInValid, messageBuilder.ToString());
+
+        var response = context.Response;
+        response.ContentType = MediaTypeNames.Application.Json;
+        response.StatusCode = StatusCodes.Status400BadRequest;
+        return response.WriteAsync(result.MySerialize());
+    }
+
+    private Task HandleRetryLimitExceededException(HttpContext context)
+    {
+        HandleRetryLimitExceededException(context);
+        var response = context.Response;
+        response.ContentType = MediaTypeNames.Application.Json;
+        ApiFailedResult<object> result;
+            
+        response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
+        result = ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.DatabaseTimeout);
+            
+        return response.WriteAsync(result.MySerialize());
+    }
+
+    private Task HandleInvalidCastException(HttpContext context)
+    {
+        var response = context.Response;
+        response.ContentType = MediaTypeNames.Application.Json;
+        ApiFailedResult<object> result;
+            
+        response.StatusCode = (int)HttpStatusCode.BadRequest;
+        result = ApiFailedResult<object>.Instance.WithMessage(CodeResponseMessage.ExcuteSqlQueryError);
+            
+        return response.WriteAsync(result.MySerialize());
+    }
+
+    private Task HandleExceptionError(HttpContext context, Exception error)
+    {
+        Log.ForContext(CustomErrorHandlerMiddlewareContext, context);
+            
+        var response = context.Response;
+        response.ContentType = MediaTypeNames.Application.Json;
+        ApiFailedResult<object> result;
+            
+        // Using switch for custom exception
+        switch (error)
+        {
+            // Add custom exception code below!
+            case TaskCanceledException ex1:
+            case OperationCanceledException ex2:
+                response.StatusCode = (int)HttpStatusCode.GatewayTimeout;
+                result = new ApiFailedResult<object>(CodeResponseMessage.Timeout);
+                break;
+            case BadRequestException:
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                result = new ApiFailedResult<object>(CodeResponseMessage.DataInValid);
+                break;
+            default:
+                response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                result = new ApiFailedResult<object>(CodeResponseMessage.SystemError);
+                break;
+        }
+
+        return response.WriteAsync(result.MySerialize()); 
+    }
+}
+
+public static class CustomErrorHandlerMiddlewareExtensions
+{
+    public static IApplicationBuilder UseExceptionHandling(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<CustomErrorHandlerMiddleware>();
     }
 }
