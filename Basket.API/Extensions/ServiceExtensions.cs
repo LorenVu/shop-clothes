@@ -1,5 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Basket.API.Repositories;
+using Basket.API.Services;
 using BuildingBlock.Shared.Configs;
 using Clothes.Domain.Extensions;
 
@@ -50,7 +52,8 @@ public static class ServiceExtensions
 
     private static void ConfigureServices(this IServiceCollection services)
     {
-        
+        services.AddScoped<IBasketRepository, BasketRepository>();
+        services.AddScoped<IBasketService, BasketService>();
     }
 
     public static IServiceCollection ConfigureGrpcServices(this IServiceCollection services, IConfiguration configuration)

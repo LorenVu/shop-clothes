@@ -10,6 +10,16 @@ public class BasketRepository(IDistributedCache redisCache) : IBasketRepository
     public async Task<Cart> GetCartAsync(Guid customerId)
     {
         var cart = new Cart();
+
+        try
+        {
+            await redisCache.GetStringAsync(customerId.ToString());
+        }
+        catch (Exception ex)
+        {
+            
+        }
+        
         var cartData = await redisCache.GetStringAsync(customerId.ToString());
 
         if (!string.IsNullOrWhiteSpace(cartData))

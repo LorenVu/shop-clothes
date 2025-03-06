@@ -19,10 +19,11 @@ public static class ApplicationExtensions
         app.UseRouting();
         // app.UseHttpsRedirection(); //for production only
         app.UseResponseCaching();
-        app.UseRequestTimeouts();
+        //app.UseRequestTimeouts();
         app.UseExceptionHandling();
         app.UseAuthentication();
         app.UseAuthorization();
+
         
         app.UseEndpoints(endpoints =>
         {
