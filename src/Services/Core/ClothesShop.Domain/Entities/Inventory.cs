@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using BuildingBlock.Shared.Contracts.Domains;
 using BuildingBlock.Shared.Enums.Product;
+using Shared.Contracts.Domains;
 
 namespace Clothes.Domain.Entities;
 

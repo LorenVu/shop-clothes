@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using BuildingBlock.Shared.Contracts.Domains;
 using BuildingBlock.Shared.Contracts.Domains.Interfaces;
+using Shared.Contracts.Domains.Interfaces;
 
-namespace BuildingBlock.Shared.Contracts.Domains;
+namespace Shared.Contracts.Domains;
 
 public abstract class EntityAuditBase<TKey> : EntityBase<TKey>, IEntityAuditBase<TKey>
 {

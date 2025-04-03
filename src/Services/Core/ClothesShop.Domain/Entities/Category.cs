@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using BuildingBlock.Shared.Contracts.Domains;
 using BuildingBlock.Shared.Contracts.Domains.Interfaces;
 using BuildingBlock.Shared.Enums.Common;
+using Shared.Contracts.Domains;
 
 namespace Clothes.Domain.Entities;
 
