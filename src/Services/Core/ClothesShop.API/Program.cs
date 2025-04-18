@@ -17,14 +17,30 @@ try
     
     var app = builder.Build();
     app.UseInfrastructure(builder);
-            
-    app.MigrateDatabase<ApplicationDbContext>((context, _) =>
-        {
-            BrandContextSeed.SeedBrandAsync(context, Log.Logger).Wait();
-            CategoryContextSeed.SeedCategoryAsync(context, Log.Logger).Wait();
-            ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
-        })
-        .Run();
+         
+    // var isEfCoreCommand = args.Any(a => a.Equals("ef", StringComparison.OrdinalIgnoreCase));
+    //
+    // if (!isEfCoreCommand)
+    // {
+    //     app.MigrateDatabase<ApplicationDbContext>((context, _) =>
+    //     {
+    //         BrandContextSeed.SeedBrandAsync(context, Log.Logger).Wait();
+    //         CategoryContextSeed.SeedCategoryAsync(context, Log.Logger).Wait();
+    //         ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
+    //     });
+    // }
+    
+    app.Run();
+}
+
+catch(HostAbortedException ex)
+{
+    //Block error when generate migrations
+    var type = ex.GetType().Name;    
+    if(type.Equals("StopTheHostException", StringComparison.Ordinal))
+        throw;
+    
+    Log.Error(ex, "An error occurred when starting up the Application.");
 }
 catch(Exception ex)
 {
@@ -32,8 +48,8 @@ catch(Exception ex)
     var type = ex.GetType().Name;    
     if(type.Equals("StopTheHostException", StringComparison.Ordinal))
         throw;
-            
-    Log.Error(ex, "Unhandled exception");
+    
+    Log.Fatal(ex, "An error occurred when starting up the Application.");
 }
 finally
 {

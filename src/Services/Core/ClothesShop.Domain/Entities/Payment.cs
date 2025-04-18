@@ -30,15 +30,12 @@ public class Payment : EntityAuditBase<int>, IStatusTracking
     [Column("fee")]
     public double Fee { get; set; }
 
-    [Required]
-    [Column("status_id")]
-    public int StatusId { get; set; }
-    
     [Column("status", TypeName = "int4")]
     public int Status { get; set; }
 
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 
-    public virtual ICollection<Order>? Orders { get; init; }
+    public int OrderId { get; set; }
+    public virtual Order? Orders { get; init; }
 }

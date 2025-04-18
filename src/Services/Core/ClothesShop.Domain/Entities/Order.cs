@@ -42,8 +42,8 @@ public class Order : EntityAuditBase<long>, IStatusTracking
     public int StatusId { get; private set; }
 
     [Required]
-    [Column("user_id")]
-    public Guid UserId { get; init; }
+    [Column("customer_id")]
+    public Guid? CustomerId { get; init; }
     
     [Column("status", TypeName = "int4")]
     public int Status { get; set; }
@@ -54,7 +54,7 @@ public class Order : EntityAuditBase<long>, IStatusTracking
     [Column("order_status_id")]
     public int OrderStatusId { get; set; }
 
-    public virtual Payment? Payments { get; init; }
+    public virtual ICollection<Payment>? Payments { get; init; }
     public virtual ICollection<OrderItem>? Items { get; init; }
     public virtual OrderStatus? OrderStatus { get; init; }
 

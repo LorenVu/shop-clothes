@@ -25,6 +25,7 @@
       <Folder Include="Common\Constrants\Responses\" />
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Validators\" />
+      <Folder Include="Features\Queries\Orders\" />
       <Folder Include="Features\Queries\Products\" />
     </ItemGroup>
 

@@ -8,6 +8,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasQueryFilter(x => !x.IsDeleted);
+
         builder
             .HasIndex(c => c.FullName, "IX_Customer_FullName_Descending")
             .HasMethod("gin")
